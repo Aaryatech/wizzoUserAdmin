@@ -275,17 +275,20 @@
 
 		}
 
-		function verifyPassword() {
+		/* function verifyPassword() {
 
 			var userPassword = $('#userPassword').val();
 			var cPassword = $('#cPassword').val();
 			alert(userPassword);
+			alert(cPassword);
 
 			if (userPassword == cPassword) {
+				
+				
 
 			}
 
-		}
+		} */
 	</script>
 
 </body>

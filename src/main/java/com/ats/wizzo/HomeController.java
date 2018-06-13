@@ -79,32 +79,34 @@ public class HomeController {
 			} else {
 
 				RestTemplate rest = new RestTemplate();
-				/*MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-				map.add("userMob", name);
-				map.add("password", password);
-				LoginResponseExh loginResponse = rest.postForObject(Constants.url + "/loginExhibitor", map,
-						LoginResponseExh.class);
-				System.out.println("loginResponse" + loginResponse);*/
+				
+				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+				map.add("userMobile", name);
+				map.add("userPassword", password);
+				ErrorMessage errorMessage = rest.postForObject(Constants.url + "/userLogin", map, ErrorMessage.class);
+				System.out.println("loginResponse" + errorMessage);
+
+				
 
 				if (name.equals("Tester") && password.equals("1234")) {
 					mav = new ModelAndView("home");
-					MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-					map.add("userId", 1); 
-					Room[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map,
-							Room[].class);
-					
+					MultiValueMap<String, Object> map1 = new LinkedMultiValueMap<String, Object>();
+					map1.add("userId", 1);
+					Room[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1, Room[].class);
+
 					List<Room> roomList = new ArrayList<Room>(Arrays.asList(room));
-					System.out.println("roomList" +  roomList);
+					System.out.println("roomList" + roomList);
 					mav.addObject("roomList", roomList);
 
 				} else {
+					
+					
 
 					mav = new ModelAndView("login");
 					System.out.println("Invalid login credentials");
 
 				}
 
-				
 			}
 		} catch (Exception e) {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
@@ -161,17 +163,20 @@ public class HomeController {
 
 			RestTemplate rest = new RestTemplate();
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-			map.add("userMobile", userMobile);
-			map.add("otp", otp);
+			map.add("userMob", userMobile);
+			map.add("userOtp", otp);
 			ErrorMessage errorMessage = rest.postForObject(Constants.url + "/login", map, ErrorMessage.class);
 			System.out.println("loginResponse" + errorMessage);
-
-			UserPwd userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPassword, UserPwd.class);
+			UserPwd userPwdRes = new UserPwd();
+			userPwdRes.setUserPassword(userPassword);
+			UserPwd userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
+			
+			
 			System.out.println("userPwd" + userPwd.toString());
 
 		} catch (Exception e) {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
-			e.getStackTrace();
+		
 		}
 		return mav;
 
