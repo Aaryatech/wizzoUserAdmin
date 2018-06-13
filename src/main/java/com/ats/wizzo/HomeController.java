@@ -12,6 +12,7 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ats.wizzo.model.User;
 import com.ats.wizzo.model.UserPwd;
@@ -29,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ats.wizzo.model.ErrorMessage;
+import com.ats.wizzo.model.LoginResponseUser;
 import com.ats.wizzo.model.Room;
 import com.ats.wizzo.common.Constants;
 
@@ -79,19 +81,22 @@ public class HomeController {
 			} else {
 
 				RestTemplate rest = new RestTemplate();
-				
+
 				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 				map.add("userMobile", name);
 				map.add("userPassword", password);
-				ErrorMessage errorMessage = rest.postForObject(Constants.url + "/userLogin", map, ErrorMessage.class);
-				System.out.println("loginResponse" + errorMessage);
+				LoginResponseUser loginResponse = rest.postForObject(Constants.url + "/userLogin", map,
+						LoginResponseUser.class);
+				System.out.println("loginResponse" + loginResponse);
 
-				
-
-				if (name.equals("Tester") && password.equals("1234")) {
+				if (loginResponse.isError() == false) {
 					mav = new ModelAndView("home");
+
+					HttpSession session = request.getSession();
+					session.setAttribute("organiser", loginResponse.getUserPassword());
+					session.setAttribute("UserDetail", loginResponse);
 					MultiValueMap<String, Object> map1 = new LinkedMultiValueMap<String, Object>();
-					map1.add("userId", 1);
+					map1.add("userId", loginResponse.getUserPassword().getUserId());
 					Room[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1, Room[].class);
 
 					List<Room> roomList = new ArrayList<Room>(Arrays.asList(room));
@@ -99,8 +104,6 @@ public class HomeController {
 					mav.addObject("roomList", roomList);
 
 				} else {
-					
-					
 
 					mav = new ModelAndView("login");
 					System.out.println("Invalid login credentials");
@@ -170,13 +173,12 @@ public class HomeController {
 			UserPwd userPwdRes = new UserPwd();
 			userPwdRes.setUserPassword(userPassword);
 			UserPwd userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
-			
-			
+
 			System.out.println("userPwd" + userPwd.toString());
 
 		} catch (Exception e) {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
-		
+
 		}
 		return mav;
 

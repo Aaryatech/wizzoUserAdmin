@@ -4,7 +4,7 @@ public class LoginResponseUser {
 
 	private boolean error;
 	private String msg;
-	private User user;
+	private UserPassword userPassword;
 
 	public boolean isError() {
 		return error;
@@ -22,17 +22,17 @@ public class LoginResponseUser {
 		this.msg = msg;
 	}
 
-	public User getUser() {
-		return user;
+	public UserPassword getUserPassword() {
+		return userPassword;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserPassword(UserPassword userPassword) {
+		this.userPassword = userPassword;
 	}
 
 	@Override
 	public String toString() {
-		return "LoginResponseUser [error=" + error + ", msg=" + msg + ", user=" + user + "]";
+		return "LoginResponseUser [error=" + error + ", msg=" + msg + ", userPassword=" + userPassword + "]";
 	}
 
 }
