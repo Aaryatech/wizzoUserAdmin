@@ -3,7 +3,10 @@ package com.ats.wizzo;
 import java.io.IOException;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -26,7 +29,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ats.wizzo.model.ErrorMessage;
-
+import com.ats.wizzo.model.Room;
 import com.ats.wizzo.common.Constants;
 
 /**
@@ -60,32 +63,53 @@ public class HomeController {
 	@RequestMapping("/loginProcess")
 	public ModelAndView helloWorld(HttpServletRequest request, HttpServletResponse res) throws IOException {
 
-		String userMobile = request.getParameter("userMobile");
-		String userPassword = request.getParameter("userPassword");
+		String name = request.getParameter("username");
+		String password = request.getParameter("password");
 
 		ModelAndView mav = new ModelAndView("login");
 
 		res.setContentType("text/html");
 		try {
-			System.out.println("Login Process " + userMobile);
-			System.out.println("empPassword " + userPassword);
+			System.out.println("Login Process " + name);
+			System.out.println("password " + password);
 
-			if (userMobile.equalsIgnoreCase("") || userPassword.equalsIgnoreCase("") || userMobile == null
-					|| userPassword == null) {
+			if (name.equalsIgnoreCase("") || password.equalsIgnoreCase("") || name == null || password == null) {
 
 				mav = new ModelAndView("login");
 			} else {
 
 				RestTemplate rest = new RestTemplate();
-				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-				map.add("userMobile", userMobile);
-				map.add("userPassword", userPassword);
-				ErrorMessage errorMessage = rest.postForObject(Constants.url + "/userLogin", map, ErrorMessage.class);
-				System.out.println("loginResponse" + errorMessage);
+				/*MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+				map.add("userMob", name);
+				map.add("password", password);
+				LoginResponseExh loginResponse = rest.postForObject(Constants.url + "/loginExhibitor", map,
+						LoginResponseExh.class);
+				System.out.println("loginResponse" + loginResponse);*/
 
+				if (name.equals("Tester") && password.equals("1234")) {
+					mav = new ModelAndView("home");
+					MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+					map.add("userId", 1); 
+					Room[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map,
+							Room[].class);
+					
+					List<Room> roomList = new ArrayList<Room>(Arrays.asList(room));
+					System.out.println("roomList" +  roomList);
+					mav.addObject("roomList", roomList);
+
+				} else {
+
+					mav = new ModelAndView("login");
+					System.out.println("Invalid login credentials");
+
+				}
+
+				
 			}
 		} catch (Exception e) {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
+			e.printStackTrace();
+
 		}
 
 		return mav;

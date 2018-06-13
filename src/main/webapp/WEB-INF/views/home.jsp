@@ -196,12 +196,20 @@ div.desc {
 <div  >
 				<div   style="  overflow-x:scroll;  width: auto;" ><!--    style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;" -->
   
-  <table style="  overflow-x:scroll;  width: 100%;"><tr> 
+  <table style="  overflow-x:scroll;  width: auto;"><tr> 
   
   <c:forEach items="${roomList}" var="roomList" varStatus="count">
   <td style="background-color:#aaa; width: 500px;">
    <h2>${roomList.roomName}</h2>
-    <p>Some text....... ........</p>
+    <p>Switch 1</p>
+    <p>Switch 2</p>
+    <p>Switch 3</p>
+    <p>Switch 4</p>
+    <p>Switch 5</p>
+    <p>Switch 6</p>
+    <p>Switch 7</p>
+    <p>Switch 8</p>
+    
     </td>
 											 
 										</c:forEach>
