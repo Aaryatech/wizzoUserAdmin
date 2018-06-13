@@ -80,10 +80,12 @@ div.desc {
     text-align: center;
 }
 </style>
+ 
+ 
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 	<!--topLeft-nav-->
-	<div class="sidebarOuter"></div>
+	<!-- <div class="sidebarOuter"></div> -->
 	<!--topLeft-nav-->
 
 	<!--wrapper-start-->
@@ -105,10 +107,10 @@ div.desc {
 			<!--fullGrid-->
 			<div class="wrapperIn2">
 
-				<jsp:include page="/WEB-INF/views/include/left.jsp">
+			 	<%-- <jsp:include page="/WEB-INF/views/include/left.jsp">
 					<jsp:param name="myMenu" value="${menuList}" />
 
-				</jsp:include>
+				</jsp:include> --%>  
    <%--     <input type="hidden" id="achievedTarget" value="${sessionScope.achievedTarget}">
        <input type="hidden" id="target" value="${sessionScope.fraTarget}"> --%>
        <c:choose>
@@ -121,13 +123,104 @@ div.desc {
        </c:choose>
 
 				<!--rightSidebar-->
-				<div class="sidebarright">
-										<h2 class="pageTitle">Hi <span>${login.exhName},</span> Welcome Back</h2> 
+				<!-- <div  >
+				<div   style="  overflow-x:scroll;  width: auto;" >   style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;"
+  
+  <table style="  overflow-x:scroll;  width: 500%;"><tr><td    style=" background-color:#aaa; width: 500px; ">
+   
+    <h2>Column 1</h2>
+    <p>Some text..........................................
+.............................................................................................................
+..................................................................................
+..................................................................................
+..................................................................................
+..................................................................................
+..................................................................................
+..................................................................................
+..................................................................................
+..................................................................................
+.......................................................................................................................................................... </p>
+  </td>
+    <td style="background-color:#bbb; width: 500px;" >
+   <h2>Column 2</h2>
+    <p>Some text...  </p>
+    </td>
+  <td  style="background-color:#aaa; width: 500px;"> 
+    <h2>Column 3</h2>
+    <p>Some text...  </p>
+  </td>
+    <td style="background-color:#bbb; width:500px;">
+   <h2>Column 4</h2>
+    <p>Some text.... .</p>
+    </td><td  style="background-color:#aaa; width: 500px;">
+    <h2>Column 5</h2>
+    <p>Some text.... </p>
+  </td>
+    <td style="background-color:#bbb; width: 500px;">
+   <h2>Column 6</h2>
+    <p>Some text...... </p>
+    </td><td  style="background-color:#aaa; width: 500px;">
+    <h2>Column 7</h2>
+    <p>Some text..... </p>
+  </td>
+    <td style="background-color:#bbb; width: 500px;">
+   <h2>Column 8</h2>
+    <p>Some text..... .</p>
+    </td><td  style="background-color:#aaa; width: 500px;">
+    <h2>Column 9</h2>
+    <p>Some text..... ..</p>
+  </td>
+    <td style="background-color:#bbb; width: 500px;">
+   <h2>Column 10</h2>
+    <p>Some text... ....</p>
+    </td><td  style="background-color:#aaa; width: 500px;">
+    <h2>Column 11</h2>
+    <p>Some text.... .</p>
+  </td>
+    <td style="background-color:#aaa; width: 500px;">
+   <h2>Column 12</h2>
+    <p>Some text....... ........</p>
+    </td>
+     <td style="background-color:#bbb; width: 500px;">
+   <h2>Column 13</h2>
+    <p>Some text....... ........</p>
+    </td>
+     <td style="background-color:#aaa; width: 500px;">
+   <h2>Column 14</h2>
+    <p>Some text....... ........</p>
+    </td>
+    </tr>
+  </table>
+</div> -->
+
+<div  >
+				<div   style="  overflow-x:scroll;  width: auto;" ><!--    style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;" -->
+  
+  <table style="  overflow-x:scroll;  width: 100%;"><tr> 
+  
+  <c:forEach items="${roomList}" var="roomList" varStatus="count">
+  <td style="background-color:#aaa; width: 500px;">
+   <h2>${roomList.roomName}</h2>
+    <p>Some text....... ........</p>
+    </td>
+											 
+										</c:forEach>
+  
+    </tr>
+  </table>
+</div>
+ 
+
+ 
+
+ 
+										<%-- <h2 class="pageTitle">Hi <span>${login.exhName},</span> Welcome Back</h2> 
 										<div style="text-align: right; "><b><a href="${pageContext.request.contextPath}/exhibitorDashboard">Dashboard</a></b></div>
-            
+             --%>
+             
 					<!--slider-->
 					<!--slider thum size : width:850px height:350px-->
-						<div class="latestNews">
+						<%-- <div class="latestNews">
 					
 						<h3 class="latestNewsTitle">Event List</h3>
 							<div class="microsoft marquee">
@@ -147,7 +240,7 @@ div.desc {
 						
 						</c:forEach>
 						</div>
-					</div>
+					</div> --%>
 			<!-- 		<div id="owl-example" class="owl-carousel"> -->
 
 						<c:forEach items="${eventList}" var="eventList">
