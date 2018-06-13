@@ -142,14 +142,14 @@
 
 									<div class="loginfildset">
 										<input class="texboxlogin" placeholder="Confirm Password"
-											name="cpassword" type="cpassword">
+											name="cpassword" type="password" id="cPassword">
 									</div>
 
 
 
 									<div class="loginfildset">
 										<input name="" class="buttonlogin" value="Submit"
-											type="submit" onclick="verifyPassword();">
+											type="submit" onclick="return Validate()">
 									</div>
 								</div>
 
@@ -274,21 +274,21 @@
 			}
 
 		}
+	</script>
 
-		/* function verifyPassword() {
 
+	<script type="text/javascript">
+		function Validate() {
 			var userPassword = $('#userPassword').val();
 			var cPassword = $('#cPassword').val();
 			alert(userPassword);
 			alert(cPassword);
-
-			if (userPassword == cPassword) {
-				
-				
-
+			if (userPassword != cPassword) {
+				alert("Passwords do not match.");
+				return false;
 			}
-
-		} */
+			return true;
+		}
 	</script>
 
 </body>
