@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
+
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import com.ats.wizzo.model.User;
 import com.ats.wizzo.model.UserPwd;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ats.wizzo.model.GenerateOtp;
 import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
-import com.ats.wizzo.model.Room;
+
 import com.ats.wizzo.model.TotalRoom;
 import com.ats.wizzo.common.Constants;
 
@@ -178,31 +176,37 @@ public class HomeController {
 
 		String userPassword = request.getParameter("userPassword");
 		String userId = request.getParameter("userId");
-		ModelAndView mav = new ModelAndView("home");
 
 		res.setContentType("text/html");
 		try {
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("userId", userId);
 
 			RestTemplate rest = new RestTemplate();
 			UserPwd userPwd = new UserPwd();
 			UserPwd userPwdRes = new UserPwd();
 
-			userPwd = rest.postForObject(Constants.url + "/getDataByUserId", userId, UserPwd.class);
-			if (userPwd == null) {
+			userPwd = rest.postForObject(Constants.url + "/getDataByUserId", map, UserPwd.class);
+			if (userPwd.getUserPwdId() == 0) {
 
 				userPwdRes.setUserPassword(userPassword);
 				userPwdRes.setUserId(Integer.parseInt(userId));
 
 				System.out.println("userPwdRes" + userPwdRes);
 				userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
+
 			} else {
 				userPwdRes.setUserPwdId(userPwd.getUserPwdId());
+				userPwdRes.setUserPassword(userPassword);
+				userPwdRes.setUserId(Integer.parseInt(userId));
+				userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
 			}
 
 			System.out.println("userPwd" + userPwd.toString());
 
 		} catch (Exception e) {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
+			e.printStackTrace();
 
 		}
 		return "login";
