@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ats.wizzo.model.ErrorMessage;
 import com.ats.wizzo.model.GenerateOtp;
 import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
@@ -103,7 +102,8 @@ public class HomeController {
 					session.setAttribute("UserDetail", loginResponse);
 					MultiValueMap<String, Object> map1 = new LinkedMultiValueMap<String, Object>();
 					map1.add("userId", loginResponse.getUserPassword().getUserId());
-					TotalRoom[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1, TotalRoom[].class);
+					TotalRoom[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1,
+							TotalRoom[].class);
 
 					List<TotalRoom> roomList = new ArrayList<TotalRoom>(Arrays.asList(room));
 					System.out.println("roomList" + roomList);
@@ -174,7 +174,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse res) throws IOException {
+	public String login(HttpServletRequest request, HttpServletResponse res) throws IOException {
 
 		String userPassword = request.getParameter("userPassword");
 		String userId = request.getParameter("userId");
@@ -184,13 +184,20 @@ public class HomeController {
 		try {
 
 			RestTemplate rest = new RestTemplate();
-
+			UserPwd userPwd = new UserPwd();
 			UserPwd userPwdRes = new UserPwd();
-			userPwdRes.setUserPassword(userPassword);
-			userPwdRes.setUserId(Integer.parseInt(userId));
-			/* userPwdRes.setUserId(loginReponse.getUser().getUserId()); */
-			System.out.println(userPwdRes);
-			UserPwd userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
+
+			userPwd = rest.postForObject(Constants.url + "/getDataByUserId", userId, UserPwd.class);
+			if (userPwd == null) {
+
+				userPwdRes.setUserPassword(userPassword);
+				userPwdRes.setUserId(Integer.parseInt(userId));
+
+				System.out.println("userPwdRes" + userPwdRes);
+				userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
+			} else {
+				userPwdRes.setUserPwdId(userPwd.getUserPwdId());
+			}
 
 			System.out.println("userPwd" + userPwd.toString());
 
@@ -198,7 +205,7 @@ public class HomeController {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
 
 		}
-		return mav;
+		return "login";
 
 	}
 
@@ -221,6 +228,27 @@ public class HomeController {
 		}
 
 		return user;
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		System.out.println("User Logout");
+
+		session.invalidate();
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "/sessionTimeOut", method = RequestMethod.GET)
+	public ModelAndView displayLoginAgain(HttpServletRequest request, HttpServletResponse response) {
+
+		ModelAndView model = new ModelAndView("login");
+
+		logger.info("/sessionTimeOut request mapping.");
+
+		model.addObject("loginResponseMessage", "Session timeout ! Please login again . . .");
+
+		return model;
+
 	}
 
 }
