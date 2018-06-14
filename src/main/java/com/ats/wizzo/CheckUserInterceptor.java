@@ -42,7 +42,8 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		if (path.equalsIgnoreCase("/sessionTimeOut") || path.equalsIgnoreCase("/")
-				|| path.equalsIgnoreCase("/loginProcess")) {
+				|| path.equalsIgnoreCase("/loginProcess") || path.equalsIgnoreCase("/createNewPassword") || 
+				path.equalsIgnoreCase("/generateOtp") || path.equalsIgnoreCase("/login")) {
 
 			System.out.println("#Login req : " + path);
 			return true;

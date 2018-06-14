@@ -142,7 +142,7 @@ input:checked + .slider:before {
 }
 </style>
  
- 
+ <c:url var="allSwitchOnOff" value="/allSwitchOnOff"></c:url> 
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 	<!--topLeft-nav-->
@@ -261,12 +261,27 @@ input:checked + .slider:before {
   
   <c:forEach items="${roomList}" var="roomList" varStatus="count">
   <td style="background-color:#aaa; width: 500px;">
-   <h2>${roomList.roomName}</h2>
-    
-    
+   <h2>${roomList.roomName}</h2> 
+   
+   <c:choose>
+   	<c:when test="${roomList.deviceList.size()>0}">
+		 <div>All  <div align="right"> 	 <label class="switch">
+		 	<input  type="checkbox"   id="switchAll${roomList.roomId}" onchange="allOnAndOff(${roomList.roomId});"  >
+		  <span class="slider round"></span>
+		</label>
+    </div>
+    </div>
+     
+   	</c:when>
+   	<c:otherwise>
+   	 <p>No Switch</p>
+   	</c:otherwise>
+   
+   </c:choose>
+     
    		 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
    <p>${deviceList.devCaption}  
-  <label class="switch">
+  <label style="text-align: right;" class="switch">
   <input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}" onchange="onAndOff(${deviceList.devId});"  >
   <span class="slider round"></span>
 </label></p>
@@ -449,6 +464,41 @@ input:checked + .slider:before {
 			alert("ON");
 		else
 			alert("OFF");
+		 
+}
+  
+  function allOnAndOff(roomId) {
+		 
+		  
+		$.getJSON('${allSwitchOnOff}',
+
+				{
+					 
+					 
+			roomId : roomId, 
+					ajax : 'true'
+
+				},
+				function(data) {
+					
+					if(document.getElementById("switchAll"+roomId).checked == true)
+						{
+						for(var i =0 ;i<data.length;i++)
+						 { 
+						 document.getElementById("switch"+data[i]).checked = true;
+						 }
+						} 
+					else
+						{
+						for(var i =0 ;i<data.length;i++)
+						 { 
+						 document.getElementById("switch"+data[i]).checked = false;
+						 }
+						}
+						 		
+				});
+		 
+ 
 		 
 }
   

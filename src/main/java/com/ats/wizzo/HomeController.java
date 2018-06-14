@@ -44,7 +44,7 @@ import com.ats.wizzo.common.Constants;
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
+	List<TotalRoom> roomList = new ArrayList<TotalRoom>();
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -103,7 +103,7 @@ public class HomeController {
 					TotalRoom[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1,
 							TotalRoom[].class);
 
-					List<TotalRoom> roomList = new ArrayList<TotalRoom>(Arrays.asList(room));
+					 roomList = new ArrayList<TotalRoom>(Arrays.asList(room));
 					System.out.println("roomList" + roomList);
 					mav.addObject("roomList", roomList);
 
@@ -123,6 +123,35 @@ public class HomeController {
 
 		return mav;
 
+	}
+	
+	@RequestMapping(value = "/allSwitchOnOff", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Integer> allSwitchOnOff(HttpServletRequest request, HttpServletResponse response) {
+
+		List<Integer> roomIdList = new ArrayList<Integer>();
+		try {
+			
+			int roomId = Integer.parseInt(request.getParameter("roomId"));
+			for(int i=0;i<roomList.size();i++)
+			{
+				if(roomList.get(i).getRoomId()==roomId)
+				{
+					for(int j =0 ;j<roomList.get(i).getDeviceList().size();j++)
+					{
+						roomIdList.add(roomList.get(i).getDeviceList().get(j).getDevId());
+					}
+					break;
+				}
+			}
+			
+			System.out.println(roomIdList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return roomIdList;
 	}
 
 	@RequestMapping(value = "/createNewPassword", method = RequestMethod.GET)
