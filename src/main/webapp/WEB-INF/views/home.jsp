@@ -79,9 +79,9 @@ div.desc {
     padding: 15px;
     text-align: center;
 }
-table, th, td {
-    border: 1px solid black;
-}
+/* table, td {
+    border-right: 1px solid black;
+} */
 </style>
 
 <style>
@@ -97,11 +97,11 @@ table, th, td {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
+  top: -2;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #3e1515;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -174,14 +174,7 @@ input:checked + .slider:before {
 				</jsp:include> --%>  
    <%--     <input type="hidden" id="achievedTarget" value="${sessionScope.achievedTarget}">
        <input type="hidden" id="target" value="${sessionScope.fraTarget}"> --%>
-       <c:choose>
-       <c:when test="${loginInfo.accessRight==1}">
-                  	<a href="${pageContext.request.contextPath}/viewMonthwiseSellBill"> 
-                  	 <div id="chart_div" style="width: 220px;height: 70px;  float:right;margin-right: 60px;margin-top: 10px;"></div></a>
-       
-       </c:when>
-       
-       </c:choose>
+        
 
 				<!--rightSidebar-->
 				<!-- <div  >
@@ -260,36 +253,44 @@ input:checked + .slider:before {
   <table style="  overflow-x:scroll;  width: auto;"><tr> 
   
   <c:forEach items="${roomList}" var="roomList" varStatus="count">
-  <td style="background-color:#aaa; width: 500px;">
-   <h2>${roomList.roomName}</h2> 
-   
-   <c:choose>
-   	<c:when test="${roomList.deviceList.size()>0}">
-		 <div>All  <div align="right"> 	 <label class="switch">
-		 	<input  type="checkbox"   id="switchAll${roomList.roomId}" onchange="allOnAndOff(${roomList.roomId});"  >
-		  <span class="slider round"></span>
-		</label>
-    </div>
-    </div>
-     
-   	</c:when>
-   	<c:otherwise>
-   	 <p>No Switch</p>
-   	</c:otherwise>
-   
-   </c:choose>
-     
-   		 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
-   <p>${deviceList.devCaption}  
-  <label style="text-align: right;" class="switch">
-  <input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}" onchange="onAndOff(${deviceList.devId});"  >
-  <span class="slider round"></span>
-</label></p>
-										</c:forEach>
-    
-    </td>
+					  <td style="background-color:#9ceabb; width: 500px; padding-left:12px; border: 1px solid black;">
+									  <br>
+									    <h2 align="center" >${roomList.roomName}</h2> 
+									 <br>
+									   <c:choose>
+									   	<c:when test="${roomList.deviceList.size()>0}">
+											  <table style="border:0px solid white;">
+											  <tr><td  align="left" style="width:300px;">All
+												   <td align="right" style=" padding-right:12px;">    
+													 <label  class="switch">
+													 	<input  type="checkbox"   id="switchAll${roomList.roomId}" onchange="allOnAndOff(${roomList.roomId});"  >
+													  <span class="slider round" ></span>
+													</label>
+										    	   </td>
+										    	   </tr>
+									    	 </table>
+									   	</c:when>
+									   	<c:otherwise>
+									   	 		 <div align="center">No Switch</div>
+									   	</c:otherwise>
+									   
+									   </c:choose><br>
+									     
+									   		 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
+												  <table style="border:0px solid white;">
+												   <tr><td  align="left" style="width:300px;">${deviceList.devCaption} </td>
+													   <td align="right" style=" padding-right:12px;"> 
+															  <label  class="switch">
+															  <input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}" onchange="onAndOff(${deviceList.devId});"  >
+															  <span class="slider round"></span>
+															</label>
+														</td>
+													</tr></table>
+											</c:forEach>
+					    
+					    </td>
 											 
-										</c:forEach>
+				</c:forEach>
   
     </tr>
   </table>
