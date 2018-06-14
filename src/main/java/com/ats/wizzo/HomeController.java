@@ -37,6 +37,7 @@ import com.ats.wizzo.model.GenerateOtp;
 import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
 import com.ats.wizzo.model.Room;
+import com.ats.wizzo.model.TotalRoom;
 import com.ats.wizzo.common.Constants;
 
 /**
@@ -102,9 +103,9 @@ public class HomeController {
 					session.setAttribute("UserDetail", loginResponse);
 					MultiValueMap<String, Object> map1 = new LinkedMultiValueMap<String, Object>();
 					map1.add("userId", loginResponse.getUserPassword().getUserId());
-					Room[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1, Room[].class);
+					TotalRoom[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1, TotalRoom[].class);
 
-					List<Room> roomList = new ArrayList<Room>(Arrays.asList(room));
+					List<TotalRoom> roomList = new ArrayList<TotalRoom>(Arrays.asList(room));
 					System.out.println("roomList" + roomList);
 					mav.addObject("roomList", roomList);
 

@@ -79,6 +79,67 @@ div.desc {
     padding: 15px;
     text-align: center;
 }
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 20px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 </style>
  
  
@@ -201,14 +262,15 @@ div.desc {
   <c:forEach items="${roomList}" var="roomList" varStatus="count">
   <td style="background-color:#aaa; width: 500px;">
    <h2>${roomList.roomName}</h2>
-    <p>Switch 1</p>
-    <p>Switch 2</p>
-    <p>Switch 3</p>
-    <p>Switch 4</p>
-    <p>Switch 5</p>
-    <p>Switch 6</p>
-    <p>Switch 7</p>
-    <p>Switch 8</p>
+    
+    
+   		 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
+   <p>${deviceList.devCaption}  
+  <label class="switch">
+  <input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}" onchange="onAndOff(${deviceList.devId});"  >
+  <span class="slider round"></span>
+</label></p>
+										</c:forEach>
     
     </td>
 											 
@@ -377,6 +439,19 @@ div.desc {
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
+  
+  function onAndOff(devId) {
+		 
+		 
+		var devId = $('#switch'+devId).val();
+		 
+		if(document.getElementById("switch"+devId).checked == true)
+			alert("ON");
+		else
+			alert("OFF");
+		 
+}
+  
 	var achievedTarget=document.getElementById("achievedTarget").value;
 	var target=document.getElementById("target").value;
 	var monthTarget=target;
