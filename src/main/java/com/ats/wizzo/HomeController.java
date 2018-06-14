@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ats.wizzo.model.User;
 import com.ats.wizzo.model.UserPwd;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +33,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ats.wizzo.model.ErrorMessage;
+import com.ats.wizzo.model.GenerateOtp;
+import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
 import com.ats.wizzo.model.Room;
 import com.ats.wizzo.common.Constants;
@@ -93,7 +98,7 @@ public class HomeController {
 					mav = new ModelAndView("home");
 
 					HttpSession session = request.getSession();
-					session.setAttribute("organiser", loginResponse.getUserPassword());
+					session.setAttribute("user", loginResponse.getUserPassword());
 					session.setAttribute("UserDetail", loginResponse);
 					MultiValueMap<String, Object> map1 = new LinkedMultiValueMap<String, Object>();
 					map1.add("userId", loginResponse.getUserPassword().getUserId());
@@ -136,42 +141,54 @@ public class HomeController {
 
 	@RequestMapping(value = "/generateOtp", method = RequestMethod.GET)
 	@ResponseBody
-	public String generateOtp(HttpServletRequest request, HttpServletResponse res) throws IOException {
+	public GenerateOtp generateOtp(HttpServletRequest request, HttpServletResponse res) throws IOException {
+		GenerateOtp generateOtp = new GenerateOtp();
 		Random rnd = new Random();
 		int n = 100000 + rnd.nextInt(900000);
+
 		String userMobile = request.getParameter("userMobile");
+		System.out.println("userMobile:" + userMobile);
+		System.out.println("otp:" + n);
+
 		try {
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("userMob", userMobile);
+			map.add("userOtp", n);
+
+			LoginResponse loginReponse = rest.postForObject(Constants.url + "/login", map, LoginResponse.class);
+			System.out.println("loginResponse" + loginReponse);
+
+			/* String userId =loginReponse.getUser().getUserId(); */
+			System.out.println("user id" + loginReponse.getUser().getUserId());
+			generateOtp.setOtp(n);
+			generateOtp.setUserId(loginReponse.getUser().getUserId());
 
 		} catch (Exception e) {
 			System.out.println("HomeController Login API Excep:  " + e.getMessage());
 		}
-		String otp = String.valueOf(n);
-		return otp;
+
+		return generateOtp;
 
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse res) throws IOException {
 
-		String userMobile = request.getParameter("userMobile");
-
-		String otp = request.getParameter("otp");
 		String userPassword = request.getParameter("userPassword");
+		String userId = request.getParameter("userId");
 		ModelAndView mav = new ModelAndView("home");
 
 		res.setContentType("text/html");
 		try {
-			System.out.println("Login Process " + userMobile);
-			System.out.println("otp " + otp);
 
 			RestTemplate rest = new RestTemplate();
-			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-			map.add("userMob", userMobile);
-			map.add("userOtp", otp);
-			ErrorMessage errorMessage = rest.postForObject(Constants.url + "/login", map, ErrorMessage.class);
-			System.out.println("loginResponse" + errorMessage);
+
 			UserPwd userPwdRes = new UserPwd();
 			userPwdRes.setUserPassword(userPassword);
+			userPwdRes.setUserId(Integer.parseInt(userId));
+			/* userPwdRes.setUserId(loginReponse.getUser().getUserId()); */
+			System.out.println(userPwdRes);
 			UserPwd userPwd = rest.postForObject(Constants.url + "/saveUserPwd", userPwdRes, UserPwd.class);
 
 			System.out.println("userPwd" + userPwd.toString());

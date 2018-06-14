@@ -1,8 +1,18 @@
 package com.ats.wizzo.model;
 
 public class UserPwd {
+
+	private int userPwdId;
 	private int userId;
 	private String userPassword;
+
+	public int getUserPwdId() {
+		return userPwdId;
+	}
+
+	public void setUserPwdId(int userPwdId) {
+		this.userPwdId = userPwdId;
+	}
 
 	public int getUserId() {
 		return userId;
@@ -22,7 +32,7 @@ public class UserPwd {
 
 	@Override
 	public String toString() {
-		return "UserPwd [userId=" + userId + ", userPassword=" + userPassword + "]";
+		return "UserPwd [userPwdId=" + userPwdId + ", userId=" + userId + ", userPassword=" + userPassword + "]";
 	}
 
 }

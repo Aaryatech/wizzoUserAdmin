@@ -118,12 +118,17 @@
 							</div>
 							<input name="OTP" class="buttonlogin" value="Send OTP" id="OTP"
 								type="button" onclick="checkOTP();"> <input id="sotp"
-								name="sotp" type="text">
+								name="sotp" type="hidden"> <input id="userId"
+								name="userId" type="hidden">
 
 							<div id="hidden_div" style="display: none;">
 								<div class="loginfildset">
+
+
+
 									<input class="texboxlogin" placeholder="OTP" name="otp"
 										id="otp" type="text" data-rule-required="true">
+
 								</div>
 
 
@@ -138,7 +143,6 @@
 										<input class="texboxlogin" placeholder="Password"
 											id="userPassword" name="userPassword" type="password">
 									</div>
-
 
 									<div class="loginfildset">
 										<input class="texboxlogin" placeholder="Confirm Password"
@@ -242,19 +246,28 @@
 		function checkOTP() {
 
 			var userMobile = $('#userMobile').val();
-			alert(userMobile);
+
 			$.getJSON('${generateOtp}',
 
 			{
 
 				userMobile : userMobile,
-
 				ajax : 'true'
 
 			}, function(data) {
 				alert(data);
 
-				document.getElementById("sotp").value = data;
+				if (data.userId == 0) {
+					alert("Mobile Number does not exist Please Configured .");
+					$('#OTP').show();
+					$('#hidden_div').hide();
+
+					return false;
+				} else {
+					document.getElementById("sotp").value = data.otp;
+					document.getElementById("userId").value = data.userId;
+
+				}
 
 			});
 
@@ -271,6 +284,13 @@
 				$('#hidden_div1').show();
 				$('#votp').hide();
 
+				document.getElementById("otp").style.borderColor = "green";
+				document.getElementById("otp").disabled = true;
+				$('#hidden_div3').show();
+
+			} else {
+				alert("Wrong OTP");
+				document.getElementById("otp").style.borderColor = "red";
 			}
 
 		}
@@ -281,12 +301,12 @@
 		function Validate() {
 			var userPassword = $('#userPassword').val();
 			var cPassword = $('#cPassword').val();
-			alert(userPassword);
-			alert(cPassword);
+
 			if (userPassword != cPassword) {
 				alert("Passwords do not match.");
 				return false;
 			}
+
 			return true;
 		}
 	</script>
