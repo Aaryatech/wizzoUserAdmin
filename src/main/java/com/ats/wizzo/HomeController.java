@@ -33,7 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ats.wizzo.model.GenerateOtp;
 import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
-
+import com.ats.wizzo.model.Scheduler;
 import com.ats.wizzo.model.TotalRoom;
 import com.ats.wizzo.common.Constants;
 
@@ -152,6 +152,115 @@ public class HomeController {
 		}
 
 		return roomIdList;
+	}
+	
+	@RequestMapping(value = "/setScheduler", method = RequestMethod.GET)
+	public @ResponseBody User setScheduler(HttpServletRequest request, HttpServletResponse response) {
+
+		User user = new User();
+
+		System.out.println("in set Scheduler ");
+		try {
+
+			String scheduleTime = request.getParameter("scheduleTime");
+			int daily = Integer.parseInt(request.getParameter("daily"));
+			int roomId = Integer.parseInt(request.getParameter("roomId"));
+			int devId = Integer.parseInt(request.getParameter("devId")); 
+			int onOFF = Integer.parseInt(request.getParameter("onOFF"));
+			
+			System.out.println(scheduleTime);
+			System.out.println(daily);
+			System.out.println(roomId);
+			System.out.println(devId);
+			List<Scheduler> insert = new ArrayList<Scheduler>();
+			Scheduler scheduler = new Scheduler();
+			for(int i = 0;i<roomList.size();i++)
+			{
+				if(roomList.get(i).getRoomId()==roomId)
+				{
+					for(int j=0 ; j<roomList.get(i).getDeviceList().size();j++)
+					{
+						if(roomList.get(i).getDeviceList().get(j).getDevId()==devId)
+						{
+							
+							scheduler.setDay(daily);
+							scheduler.setDevMac(roomList.get(i).getDeviceList().get(j).getDevMac());
+							scheduler.setDevType(roomList.get(i).getDeviceList().get(j).getDevType());
+							scheduler.setOperation(onOFF);
+							scheduler.setSchStatus(1);
+							scheduler.setTime(scheduleTime+":00");
+							scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId()); 
+							insert.add(scheduler);
+						}
+					}
+				}
+			}
+
+			 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("schedulerList", insert);
+			
+			System.out.println(scheduler);
+			Scheduler[] Scheduler = rest.postForObject(Constants.url + "/setNewScheduler", insert, Scheduler[].class); 
+			System.out.println(Scheduler);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return user;
+	}
+	
+	@RequestMapping(value = "/setSchedulerForAll", method = RequestMethod.GET)
+	public @ResponseBody User setSchedulerForAll(HttpServletRequest request, HttpServletResponse response) {
+
+		User user = new User();
+
+		System.out.println("in set Scheduler ");
+		try {
+
+			String scheduleTime = request.getParameter("scheduleTime");
+			String selected = request.getParameter("selected");
+			int daily = Integer.parseInt(request.getParameter("daily")); 
+			int onOFF = Integer.parseInt(request.getParameter("onOFF"));
+			selected = selected.substring(1, selected.length()); 
+			String[] roomId = selected.split(",");
+			  
+			List<Scheduler> insert = new ArrayList<Scheduler>();
+			
+			 for(int i = 0;i<roomList.size();i++)
+			{
+				for(int k=0;k<roomId.length;k++)
+				{	  
+					if(roomList.get(i).getRoomId()==Integer.parseInt(roomId[k]))
+					{	 
+						for(int j=0 ; j<roomList.get(i).getDeviceList().size();j++)
+						{ 
+							Scheduler scheduler = new Scheduler();
+								scheduler.setDay(daily);
+								scheduler.setDevMac(roomList.get(i).getDeviceList().get(j).getDevMac());
+								scheduler.setDevType(roomList.get(i).getDeviceList().get(j).getDevType());
+								scheduler.setOperation(onOFF);
+								scheduler.setSchStatus(1);
+								scheduler.setTime(scheduleTime+":00");
+								scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId()); 
+								insert.add(scheduler);
+						 
+						}
+						 
+					}
+				}
+				
+			} 
+
+			 System.out.println(insert); 
+			Scheduler[] Scheduler = rest.postForObject(Constants.url + "/setNewScheduler", insert, Scheduler[].class); 
+			System.out.println(Scheduler); 
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return user;
 	}
 
 	@RequestMapping(value = "/createNewPassword", method = RequestMethod.GET)

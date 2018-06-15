@@ -39,6 +39,7 @@
 
 </head>
 <body> comment by sachin --%>
+ 
 <style type="text/css">
 .fit-img {
   position: absolute;
@@ -141,8 +142,54 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 </style>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 40%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
  
  <c:url var="allSwitchOnOff" value="/allSwitchOnOff"></c:url> 
+  <c:url var="setScheduler" value="/setScheduler"></c:url> 
+  <c:url var="setSchedulerForAll" value="/setSchedulerForAll"></c:url> 
+  
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 	<!--topLeft-nav-->
@@ -168,84 +215,7 @@ input:checked + .slider:before {
 			<!--fullGrid-->
 			<div class="wrapperIn2">
 
-			 	<%-- <jsp:include page="/WEB-INF/views/include/left.jsp">
-					<jsp:param name="myMenu" value="${menuList}" />
-
-				</jsp:include> --%>  
-   <%--     <input type="hidden" id="achievedTarget" value="${sessionScope.achievedTarget}">
-       <input type="hidden" id="target" value="${sessionScope.fraTarget}"> --%>
-        
-
-				<!--rightSidebar-->
-				<!-- <div  >
-				<div   style="  overflow-x:scroll;  width: auto;" >   style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;"
-  
-  <table style="  overflow-x:scroll;  width: 500%;"><tr><td    style=" background-color:#aaa; width: 500px; ">
-   
-    <h2>Column 1</h2>
-    <p>Some text..........................................
-.............................................................................................................
-..................................................................................
-..................................................................................
-..................................................................................
-..................................................................................
-..................................................................................
-..................................................................................
-..................................................................................
-..................................................................................
-.......................................................................................................................................................... </p>
-  </td>
-    <td style="background-color:#bbb; width: 500px;" >
-   <h2>Column 2</h2>
-    <p>Some text...  </p>
-    </td>
-  <td  style="background-color:#aaa; width: 500px;"> 
-    <h2>Column 3</h2>
-    <p>Some text...  </p>
-  </td>
-    <td style="background-color:#bbb; width:500px;">
-   <h2>Column 4</h2>
-    <p>Some text.... .</p>
-    </td><td  style="background-color:#aaa; width: 500px;">
-    <h2>Column 5</h2>
-    <p>Some text.... </p>
-  </td>
-    <td style="background-color:#bbb; width: 500px;">
-   <h2>Column 6</h2>
-    <p>Some text...... </p>
-    </td><td  style="background-color:#aaa; width: 500px;">
-    <h2>Column 7</h2>
-    <p>Some text..... </p>
-  </td>
-    <td style="background-color:#bbb; width: 500px;">
-   <h2>Column 8</h2>
-    <p>Some text..... .</p>
-    </td><td  style="background-color:#aaa; width: 500px;">
-    <h2>Column 9</h2>
-    <p>Some text..... ..</p>
-  </td>
-    <td style="background-color:#bbb; width: 500px;">
-   <h2>Column 10</h2>
-    <p>Some text... ....</p>
-    </td><td  style="background-color:#aaa; width: 500px;">
-    <h2>Column 11</h2>
-    <p>Some text.... .</p>
-  </td>
-    <td style="background-color:#aaa; width: 500px;">
-   <h2>Column 12</h2>
-    <p>Some text....... ........</p>
-    </td>
-     <td style="background-color:#bbb; width: 500px;">
-   <h2>Column 13</h2>
-    <p>Some text....... ........</p>
-    </td>
-     <td style="background-color:#aaa; width: 500px;">
-   <h2>Column 14</h2>
-    <p>Some text....... ........</p>
-    </td>
-    </tr>
-  </table>
-</div> -->
+			  
 
 <div  >
 				<div   style="  overflow-x:scroll;  width: auto;" ><!--    style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;" -->
@@ -254,6 +224,12 @@ input:checked + .slider:before {
   
   <c:forEach items="${roomList}" var="roomList" varStatus="count">
 					  <td style="background-color:#9ceabb; width: 500px; padding-left:12px; border: 1px solid black;">
+					   <c:choose>
+									 <c:when test="${roomList.deviceList.size()>0}">
+									   	<div align="right"><input  type="checkbox"  value="${roomList.roomId}" id="allScheduler${roomList.roomId}" name="allScheduler"   ></div>
+								  	</c:when>
+						</c:choose>
+					  
 									  <br>
 									    <h2 align="center" >${roomList.roomName}</h2> 
 									 <br>
@@ -279,6 +255,60 @@ input:checked + .slider:before {
 									   		 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
 												  <table style="border:0px solid white;">
 												   <tr><td  align="left" style="width:300px;">${deviceList.devCaption} </td>
+												   <td> 
+ 									<i class="fa fa-clock-o" style="font-size:24px" id="myBtn${deviceList.devId}" onclick="popupMsg(${deviceList.devId})"></i> 
+ 									
+ 									  <div id="myModal${deviceList.devId}" class="modal">
+ 
+								  <div class="modal-content">
+								    <span class="close" id="close${deviceList.devId}">&times;</span>
+								    <p>Some text in the Modal..${deviceList.devId}</p>
+								    
+										   <div class="colOuter"> 
+										    <div class="col-md-2">Schedule Time*</div>
+											<div class="col-md-3">
+												<input type="time" name="scheduleTime${deviceList.devId}" class="form-control"
+													id="scheduleTime${deviceList.devId}"   />
+											</div> 
+											<div class="col-md-2">Daily*</div>
+											<div class="col-md-3">
+												<select class="selectpicker" data-live-search="true"  title="Please Select" 
+																	name="daily${deviceList.devId}" id="daily${deviceList.devId}"   > 
+																 
+																		 
+																			<option value="0">NO</option>
+																			<option value="1">Yes</option>
+																		
+																		 
+																	 </select>
+											</div>
+											</div><br>
+											
+											 <div class="colOuter">  
+											<div class="col-md-2">ON/OFF*</div>
+											<div class="col-md-3">
+												<select class="selectpicker" data-live-search="true"  title="Please Select" 
+																	name="onOFF${deviceList.devId}" id="onOFF${deviceList.devId}"   > 
+																 
+																		 
+																			<option value="0">OFF</option>
+																			<option value="1">ON</option>
+																		
+																		 
+																	 </select>
+											</div>
+											</div><br>
+											
+									<div class="colOuter">
+						<div align="center">
+							<input type="button" onclick="setScheduler(${deviceList.devId},${deviceList.roomId})" value="Set Shedule" class="btn btn-info">
+							</div>
+				 
+					</div>
+								  </div>
+								
+								</div>  
+ 									</td>
 													   <td align="right" style=" padding-right:12px;"> 
 															  <label  class="switch">
 															  <input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}" onchange="onAndOff(${deviceList.devId});"  >
@@ -295,152 +325,62 @@ input:checked + .slider:before {
     </tr>
   </table>
 </div>
+  
+ <div id="myModal" class="modal">
  
-
- 
-
- 
-										<%-- <h2 class="pageTitle">Hi <span>${login.exhName},</span> Welcome Back</h2> 
-										<div style="text-align: right; "><b><a href="${pageContext.request.contextPath}/exhibitorDashboard">Dashboard</a></b></div>
-             --%>
-             
-					<!--slider-->
-					<!--slider thum size : width:850px height:350px-->
-						<%-- <div class="latestNews">
-					
-						<h3 class="latestNewsTitle">Event List</h3>
-							<div class="microsoft marquee">
-						<c:forEach items="${schedulerLists}" var="schedulerLists"  varStatus="count">
-						
-					            <c:set var="colors" value=""/>
-					            <c:choose>
-					            <c:when test="${count.index%2==0}">
-					            <c:set var="colors" value="white"/>
-					           </c:when>
-					           <c:otherwise>
-					            <c:set var="colors" value="lightblue"/>
-					          </c:otherwise>
-					          </c:choose>
-								<span style="color:${colors}"> ${schedulerLists.schMessage} </span>
-							
-						
-						</c:forEach>
-						</div>
-					</div> --%>
-			<!-- 		<div id="owl-example" class="owl-carousel"> -->
-
-						<c:forEach items="${eventList}" var="eventList">
-
-							<div class="gallery">
-  <a target="_blank" href="${pageContext.request.contextPath}/getEventDetail/${eventList.eventId}/${eventList.orgId}">
-    <img src="http://132.148.143.124:8080/uploads/MSPCAKE/13:17:38-aa.png" alt="Trolltunga Norway" width="300" height="200">
-  </a>
- <p align="left"> Event Name: <b>${eventList.eventName}</b></p>
-  <p align="left">Place: <b>${eventList.eventLocation}</b> </p>
-  <p align="left">Event From : <b>${eventList.eventFromDate}</b> &nbsp;&nbsp;&nbsp;&nbsp;  To : <b>${eventList.eventToDate}</b></p>
-  <div class="desc">
-  <c:choose>
-    <c:when test="${eventList.subStatus==0}">
-    <input type="button" value="Subscribe" class="btn btn-info"/>
-    </c:when>
-  <c:otherwise>
-    <input type="button" disabled value="Subscribe" class="btn btn-success"/>
-  </c:otherwise>
-  </c:choose>
-    </div>
-  </div>
- 		</c:forEach>
- 		
-
-						<%-- <div class="item">
-							<div class="screen4plan">
-								<div class="homesliderImg">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/slide1.jpg"
-										alt="img">
+								  <div class="modal-content">
+								    <span class="close" id="close">&times;</span>
+								    <p>Some text in the Modal..</p>
+								    
+										   <div class="colOuter"> 
+										    <div class="col-md-2">Schedule Time*</div>
+											<div class="col-md-3">
+												<input type="time" name="scheduleTime" class="form-control"
+													id="scheduleTime"   />
+											</div> 
+											<div class="col-md-2">Daily*</div>
+											<div class="col-md-3">
+												<select class="selectpicker" data-live-search="true"  title="Please Select" 
+																	name="daily" id="daily"   > 
+																 
+																		 
+																			<option value="0">NO</option>
+																			<option value="1">Yes</option>
+																		
+																		 
+																	 </select>
+											</div>
+											</div><br>
+											
+											 <div class="colOuter">  
+											<div class="col-md-2">ON/OFF*</div>
+											<div class="col-md-3">
+												<select class="selectpicker" data-live-search="true"  title="Please Select" 
+																	name="onOFF" id="onOFF${deviceList.devId}"   > 
+																 
+																		 
+																			<option value="0">OFF</option>
+																			<option value="1">ON</option>
+																		
+																		 
+																	 </select>
+											</div>
+											</div><br>
+											
+												<div class="colOuter">
+														<div align="center">
+															<input type="button" onclick="setSchedulerForAll()" value="Set Shedule To All" class="btn btn-info">
+														</div>
+									 
+												</div>
 								</div>
-								<h3 class="homesliderTitle">
 								
-								Contrary to popular belief,
-									Lorem Ipsum is not simply in some form, by injected humour, or
-									randomised words which don't look even slightly believable.</h3>
-							</div>
-						</div>
+								</div>  
+<!-- The Modal -->
 
-						<div class="item">
-							<div class="screen4plan">
-								<div class="homesliderImg">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/slide2.jpg"
-										alt="img">
-								</div>
-								<h3 class="homesliderTitle">Contrary to popular belief,
-									Lorem Ipsum is not simply in some form, by injected humour, or
-									randomised words which don't look even slightly believable.</h3>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="screen4plan">
-								<div class="homesliderImg">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/slide1.jpg"
-										alt="img">
-								</div>
-								<h3 class="homesliderTitle">Contrary to popular belief,
-									Lorem Ipsum is not simply in some form, by injected humour, or
-									randomised words which don't look even slightly believable.</h3>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="screen4plan">
-								<div class="homesliderImg">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/slide1.jpg"
-										alt="img">
-								</div>
-								<h3 class="homesliderTitle">Contrary to popular belief,
-									Lorem Ipsum is not simply in some form, by injected humour, or
-									randomised words which don't look even slightly believable.</h3>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="screen4plan">
-								<div class="homesliderImg">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/slide1.jpg"
-										alt="img">
-								</div>
-								<h3 class="homesliderTitle">Contrary to popular belief,
-									Lorem Ipsum is not simply in some form, by injected humour, or
-									randomised words which don't look even slightly believable.</h3>
-							</div>
-						</div>
- --%>
+  
 					</div>
-					<!--slider-->
-
-					<!--latestNews-->
-					
-					
-				<%-- 	<div class="latestNews">
-					
-						<h3 class="latestNewsTitle">Latest News</h3>
-							<div class="microsoft marquee">
-						<c:forEach items="${schedulerLists}" var="schedulerLists">
-						
-					
-
-								<span> ${schedulerLists.schMessage} </span>
-							
-						
-						</c:forEach>
-						</div>
-					</div> --%>
-					
-					
+					 
 					<!--latestNews-->
 
 				</div>
@@ -450,11 +390,186 @@ input:checked + .slider:before {
 			<!--fullGrid-->
 		</div>
 		<!--rightContainer-->
-	</div>
+	 
 	<!--wrapper-end-->
+	<footer>
+	<div class="colOuter">
+						<div align="center">
+							<i class="fa fa-clock-o" style="font-size:50px" id="myBtn" onclick="popupMsgForAll()"></i>
+							</div>
+				 
+					</div>
+	
+	</footer>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+   <script>
+  function popupMsg(devId) {
+		 
+		  
+		  
+	// Get the modal
+	  var modal = document.getElementById('myModal'+devId);
+	 
+
+	  // Get the button that opens the modal
+	  var btn = document.getElementById("myBtn"+devId);
+	    
+	  // Get the <span> element that closes the modal
+	  var span = document.getElementById("close"+devId);
+	   
+	  // When the user clicks the button, open the modal 
+	  btn.onclick = function() {
+		/*   alert("in Open"); */
+	      modal.style.display = "block";
+	  }
+
+	  // When the user clicks on <span> (x), close the modal
+	  span.onclick = function() {
+	      modal.style.display = "none";
+	      document.getElementById("scheduleTime"+devId).value="";
+	      document.getElementById("daily"+devId).value=0;
+	      document.getElementById("onOFF"+devId).value=0;
+	  }
+
+	  // When the user clicks anywhere outside of the modal, close it
+	  window.onclick = function(event) {
+	      if (event.target == modal) {
+	          modal.style.display = "none";
+	          document.getElementById("scheduleTime"+devId).value="";
+	          document.getElementById("daily"+devId).value=0;
+	          document.getElementById("onOFF"+devId).value=0;
+	      }
+	  }
+		 
+}
+
+</script>  
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+ var span = document.getElementById("close");
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+    document.getElementById("scheduleTime").value="";
+    document.getElementById("daily").value=0;
+    document.getElementById("onOFF").value=0;
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+        document.getElementById("scheduleTime").value="";
+	      document.getElementById("daily").value=0;
+	      document.getElementById("onOFF").value=0;
+    }
+}
+</script>
+
   <script type="text/javascript">
+  
+  function setScheduler(devId,roomId) {
+	  
+	  var scheduleTime = $("#scheduleTime"+devId).val();
+	  var daily = $("#daily"+devId).val();
+	  var onOFF = $("#onOFF"+devId).val();
+	   
+		$('#loader').show();
+
+		$
+				.getJSON(
+						'${setScheduler}',
+
+						{
+							 
+							scheduleTime : scheduleTime, 
+							daily : daily,
+							roomId : roomId,
+							devId : devId,
+							onOFF : onOFF,
+							ajax : 'true'
+
+						},
+						function(data) { 
+							 
+							var modal = document.getElementById('myModal'+devId);
+							modal.style.display = "none"; 
+						      document.getElementById("scheduleTime"+devId).value=""; 
+						      document.getElementById("daily"+devId).value=0; 
+						      document.getElementById("onOFF"+devId).value=0;
+						});
+
+	 
+		   
+
+	}
+  
+function setSchedulerForAll() {
+	 
+	  var scheduleTime = $("#scheduleTime").val();
+	  var daily = $("#daily").val();
+	  var onOFF = $("#onOFF").val();
+	  
+	  var checkboxes = document.getElementsByName('allScheduler');
+	  var selected = "";
+	  for (var i=0; i<checkboxes.length; i++) {
+	      if (checkboxes[i].checked) {
+	    	  selected=selected+","+checkboxes[i].value;
+	      }
+	  }
+	   if(selected!="")
+		   {
+		   
+		   $('#loader').show();
+
+			$ .getJSON(
+							'${setSchedulerForAll}',
+
+							{
+								 
+								scheduleTime : scheduleTime, 
+								daily : daily, 
+								selected : selected,
+								onOFF : onOFF,
+								ajax : 'true'
+
+							},
+							function(data) { 
+								 
+								var modal = document.getElementById('myModal');
+								modal.style.display = "none"; 
+							      document.getElementById("scheduleTime").value=""; 
+							      document.getElementById("daily").value=0; 
+							      document.getElementById("onOFF").value=0;
+							});
+		   
+		   
+		   }
+	   else
+		   {
+		   alert("Select Minimum One Room ");
+		   var modal = document.getElementById('myModal');
+			modal.style.display = "none"; 
+		      document.getElementById("scheduleTime").value=""; 
+		      document.getElementById("daily").value=0; 
+		      document.getElementById("onOFF").value=0;
+		   }
+		 
+	}
   
   function onAndOff(devId) {
 		 
