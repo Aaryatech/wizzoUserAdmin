@@ -39,7 +39,9 @@
 
 </head>
 <body> comment by sachin --%>
- 
+ <div id="overlay" >  <div id="text"> Saving Your Bill,Please Wait...
+
+</div></div>
 <style type="text/css">
 .fit-img {
   position: absolute;
@@ -102,7 +104,7 @@ div.desc {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #3e1515;
+  background-color: #a98f8f;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -184,6 +186,29 @@ body {font-family: Arial, Helvetica, sans-serif;}
     text-decoration: none;
     cursor: pointer;
 }
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(101, 113, 119, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+#text {
+   position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 25px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
 </style>
  
  <c:url var="allSwitchOnOff" value="/allSwitchOnOff"></c:url> 
@@ -220,10 +245,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <div  >
 				<div   style="  overflow-x:scroll;  width: auto;" ><!--    style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;" -->
   
-  <table style="  overflow-x:scroll;  width: auto;"><tr> 
+  <table style="  overflow-x:scroll;  width: auto; color: #fff;"><tr> 
   
   <c:forEach items="${roomList}" var="roomList" varStatus="count">
-					  <td style="background-color:#9ceabb; width: 500px; padding-left:12px; border: 1px solid black;">
+					  <td style="background-color:#202522; width: 500px; padding-left:12px; border: 1px solid white; ">
 					   <c:choose>
 									 <c:when test="${roomList.deviceList.size()>0}">
 									   	<div align="right"><input  type="checkbox"  value="${roomList.roomId}" id="allScheduler${roomList.roomId}" name="allScheduler"   ></div>
@@ -235,7 +260,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									 <br>
 									   <c:choose>
 									   	<c:when test="${roomList.deviceList.size()>0}">
-											  <table style="border:0px solid white;">
+											  <table style="border:0px solid white; color: #fff;">
 											  <tr><td  align="left" style="width:300px;">All
 												   <td align="right" style=" padding-right:12px;">    
 													 <label  class="switch">
@@ -253,16 +278,16 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									   </c:choose><br>
 									     
 									   		 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
-												  <table style="border:0px solid white;">
+												  <table style="border:0px solid white; color: #fff;">
 												   <tr><td  align="left" style="width:300px;">${deviceList.devCaption} </td>
 												   <td> 
  									<i class="fa fa-clock-o" style="font-size:24px" id="myBtn${deviceList.devId}" onclick="popupMsg(${deviceList.devId})"></i> 
  									
  									  <div id="myModal${deviceList.devId}" class="modal">
  
-								  <div class="modal-content">
+								  <div class="modal-content" style=" color: #202522;">
 								    <span class="close" id="close${deviceList.devId}">&times;</span>
-								    <p>Some text in the Modal..${deviceList.devId}</p>
+								    <h3 style="text-align: center;">Set Scheduler..${deviceList.devId}</h3>
 								    
 										   <div class="colOuter"> 
 										    <div class="col-md-2">Schedule Time*</div>
@@ -330,7 +355,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
  
 								  <div class="modal-content">
 								    <span class="close" id="close">&times;</span>
-								    <p>Some text in the Modal..</p>
+								    <h3 style="text-align: center;">Set Scheduler To All..</h3>
 								    
 										   <div class="colOuter"> 
 										    <div class="col-md-2">Schedule Time*</div>
@@ -403,11 +428,19 @@ body {font-family: Arial, Helvetica, sans-serif;}
 	</footer>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
+    <script>
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+</script>
    <script>
   function popupMsg(devId) {
 		 
-		  
+		 /*  alert("first "+devId); */
 		  
 	// Get the modal
 	  var modal = document.getElementById('myModal'+devId);
@@ -420,10 +453,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 	  var span = document.getElementById("close"+devId);
 	   
 	  // When the user clicks the button, open the modal 
-	  btn.onclick = function() {
-		/*   alert("in Open"); */
+	 /*  btn.onclick = function() {
+		    alert("in Open"+devId);   */
 	      modal.style.display = "block";
-	  }
+	 /*  } */
 
 	  // When the user clicks on <span> (x), close the modal
 	  span.onclick = function() {
@@ -488,7 +521,7 @@ window.onclick = function(event) {
 	  var daily = $("#daily"+devId).val();
 	  var onOFF = $("#onOFF"+devId).val();
 	   
-		$('#loader').show();
+		on();
 
 		$
 				.getJSON(
@@ -505,7 +538,14 @@ window.onclick = function(event) {
 
 						},
 						function(data) { 
-							 
+							off();
+							 if(data.isError==true)
+								 {
+								 alert("Scheduler Is Not Set ");
+								 }
+							 else{
+								 alert("Scheduler Is Set ");
+							 }
 							var modal = document.getElementById('myModal'+devId);
 							modal.style.display = "none"; 
 						      document.getElementById("scheduleTime"+devId).value=""; 
@@ -531,6 +571,8 @@ function setSchedulerForAll() {
 	    	  selected=selected+","+checkboxes[i].value;
 	      }
 	  }
+	  on();
+	  
 	   if(selected!="")
 		   {
 		   
@@ -549,12 +591,26 @@ function setSchedulerForAll() {
 
 							},
 							function(data) { 
+								off();
+								if(data.isError==true)
+								 {
+								 alert("Scheduler Is Not Set ");
+								 }
+							 else{
+								 alert("Scheduler Is Set ");
+							 	}
 								 
 								var modal = document.getElementById('myModal');
 								modal.style.display = "none"; 
 							      document.getElementById("scheduleTime").value=""; 
 							      document.getElementById("daily").value=0; 
 							      document.getElementById("onOFF").value=0;
+							      
+							      for (var i=0; i<checkboxes.length; i++) {
+								      if (checkboxes[i].checked) {
+								    	  document.getElementById("allScheduler"+checkboxes[i].value).checked= false;
+								      }
+								  }
 							});
 		   
 		   
@@ -576,10 +632,10 @@ function setSchedulerForAll() {
 		 
 		var devId = $('#switch'+devId).val();
 		 
-		if(document.getElementById("switch"+devId).checked == true)
+		/* if(document.getElementById("switch"+devId).checked == true)
 			alert("ON");
 		else
-			alert("OFF");
+			alert("OFF"); */
 		 
 }
   

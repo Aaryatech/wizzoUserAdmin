@@ -118,9 +118,10 @@
 										name="password" type="password" required>
 								</div>
 
-
+									<h4>${loginResponseMessage}</h4>
 
 								<div class="loginfildset">
+								
 									<input name="" class="buttonlogin" value="LOGIN" type="submit">
 								</div>
 								<div class="loginfildset">

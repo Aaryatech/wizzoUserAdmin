@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ats.wizzo.model.ErrorMessage;
 import com.ats.wizzo.model.GenerateOtp;
 import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
@@ -111,6 +112,7 @@ public class HomeController {
 
 					mav = new ModelAndView("login");
 					System.out.println("Invalid login credentials");
+					mav.addObject("loginResponseMessage", "Invalid login credentials");
 
 				}
 
@@ -155,9 +157,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/setScheduler", method = RequestMethod.GET)
-	public @ResponseBody User setScheduler(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody ErrorMessage setScheduler(HttpServletRequest request, HttpServletResponse response) {
 
-		User user = new User();
+		ErrorMessage errorMessage = new ErrorMessage();
 
 		System.out.println("in set Scheduler ");
 		try {
@@ -200,20 +202,20 @@ public class HomeController {
 			map.add("schedulerList", insert);
 			
 			System.out.println(scheduler);
-			Scheduler[] Scheduler = rest.postForObject(Constants.url + "/setNewScheduler", insert, Scheduler[].class); 
-			System.out.println(Scheduler);
+			errorMessage = rest.postForObject(Constants.url + "/setNewScheduler", insert, ErrorMessage.class); 
+			System.out.println(errorMessage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return user;
+		return errorMessage;
 	}
 	
 	@RequestMapping(value = "/setSchedulerForAll", method = RequestMethod.GET)
-	public @ResponseBody User setSchedulerForAll(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody ErrorMessage setSchedulerForAll(HttpServletRequest request, HttpServletResponse response) {
 
-		User user = new User();
+		ErrorMessage errorMessage = new ErrorMessage();
 
 		System.out.println("in set Scheduler ");
 		try {
@@ -253,14 +255,14 @@ public class HomeController {
 			} 
 
 			 System.out.println(insert); 
-			Scheduler[] Scheduler = rest.postForObject(Constants.url + "/setNewScheduler", insert, Scheduler[].class); 
-			System.out.println(Scheduler); 
+			errorMessage = rest.postForObject(Constants.url + "/setNewScheduler", insert, ErrorMessage.class); 
+			System.out.println(errorMessage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return user;
+		return errorMessage;
 	}
 
 	@RequestMapping(value = "/createNewPassword", method = RequestMethod.GET)
