@@ -16,8 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ats.wizzo.model.User;
+import com.ats.wizzo.model.UserPassword;
 import com.ats.wizzo.model.UserPwd;
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,10 +34,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ats.wizzo.model.CurrentStatus;
+import com.ats.wizzo.model.Device;
 import com.ats.wizzo.model.ErrorMessage;
 import com.ats.wizzo.model.GenerateOtp;
 import com.ats.wizzo.model.LoginResponse;
 import com.ats.wizzo.model.LoginResponseUser;
+import com.ats.wizzo.model.ScanDevicesResponse;
+import com.ats.wizzo.model.ScanList;
 import com.ats.wizzo.model.Scheduler;
 import com.ats.wizzo.model.TotalRoom;
 import com.ats.wizzo.common.Constants;
@@ -44,8 +52,19 @@ import com.ats.wizzo.common.Constants;
 @Controller
 public class HomeController {
 
+	// MQTT
+	public static String publishTopic = "//operations//dlZ3Ync9";
+
+	public static String onOperation = "piMjVtYV";
+
+	public static String offOperation = "JhTVo1V1";
+
+	private MqttClient client = null;
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	List<TotalRoom> roomList = new ArrayList<TotalRoom>();
+	
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -104,8 +123,48 @@ public class HomeController {
 					TotalRoom[] room = rest.postForObject(Constants.url + "/getRoomListByUsertId", map1,
 							TotalRoom[].class);
 
-					 roomList = new ArrayList<TotalRoom>(Arrays.asList(room));
+					roomList = new ArrayList<TotalRoom>(Arrays.asList(room));
 					System.out.println("roomList" + roomList);
+
+					// getScanDevices
+
+					map = new LinkedMultiValueMap<String, Object>();
+					map.add("userId", loginResponse.getUserPassword().getUserId());
+					Device[] scanDevice = rest.postForObject(Constants.url + "/macAddByUserId", map, Device[].class);
+					List<Device> macAddList = new ArrayList<Device>(Arrays.asList(scanDevice));
+
+					List<String> macList = new ArrayList<String>();
+
+					for (Device device : macAddList) {
+
+						macList.add(device.getDevMac());
+					}
+
+					System.out.println("macList" + macList);
+					try {
+						MqttStatus mqttStatus = new MqttStatus(
+								loginResponse.getUserPassword().getAuthKey());
+						try {
+							mqttStatus.setupMQTT();
+						}catch (Exception e) {
+						e.printStackTrace();	
+						}
+						
+						mqttStatus.subscribeToTopics(macList);
+						
+						 List<CurrentStatus>currentStatusList=mqttStatus.getCurrentStatus(macList);
+						 mqttStatus.disconnect();
+							System.out.println("after thread sleep "+currentStatusList.toString());
+							mav.addObject("currentStatusList", currentStatusList);
+
+						
+					} catch (Exception e) {
+
+						e.printStackTrace();
+					}
+					
+					
+
 					mav.addObject("roomList", roomList);
 
 				} else {
@@ -126,27 +185,146 @@ public class HomeController {
 		return mav;
 
 	}
-	
+
+	@RequestMapping(value = "/singleSwitchOnOff", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Integer> singleSwitchOnOff(HttpServletRequest request, HttpServletResponse response) {
+
+		List<Integer> roomIdList = new ArrayList<Integer>();
+		try {
+
+			HttpSession session = request.getSession();
+			UserPassword user = (UserPassword) session.getAttribute("user");
+
+			if (client == null) {
+
+				client = new MqttClient("tcp://132.148.16.132:1883", "pahomqttpublish1");
+
+			}
+
+			int roomId = Integer.parseInt(request.getParameter("roomId"));
+			String operation = request.getParameter("operation");
+			int devId = Integer.parseInt(request.getParameter("devId"));
+
+			for (int i = 0; i < roomList.size(); i++) {
+				if (roomList.get(i).getRoomId() == roomId) {
+					for (int j = 0; j < roomList.get(i).getDeviceList().size(); j++) {
+						if (roomList.get(i).getDeviceList().get(j).getDevId() == devId) {
+
+							Device device = roomList.get(i).getDeviceList().get(j);
+
+							MqttMessage message = new MqttMessage();
+							String msg = "";
+							if (operation.equalsIgnoreCase("on")) {
+								msg = user.getAuthKey() + onOperation + "#" + device.getDevType();
+							} else {
+								msg = user.getAuthKey() + offOperation + "#" + device.getDevType();
+
+							}
+							message.setPayload(msg.getBytes());
+
+							if (!client.isConnected()) {
+
+								client.connect();
+
+							}
+							client.publish(device.getDevMac() + publishTopic, message);
+
+							break;
+						}
+					}
+					break;
+				}
+			}
+
+			System.out.println(roomIdList);
+
+			client.disconnect();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return roomIdList;
+	}
+
 	@RequestMapping(value = "/allSwitchOnOff", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Integer> allSwitchOnOff(HttpServletRequest request, HttpServletResponse response) {
 
 		List<Integer> roomIdList = new ArrayList<Integer>();
 		try {
-			
+
+			HttpSession session = request.getSession();
+			UserPassword user = (UserPassword) session.getAttribute("user");
+
+			if (client == null) {
+
+				client = new MqttClient("tcp://132.148.16.132:1883", "pahomqttpublish1");
+
+			}
+
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
-			for(int i=0;i<roomList.size();i++)
-			{
-				if(roomList.get(i).getRoomId()==roomId)
-				{
-					for(int j =0 ;j<roomList.get(i).getDeviceList().size();j++)
-					{
+			String operation = request.getParameter("operation");
+
+			for (int i = 0; i < roomList.size(); i++) {
+				if (roomList.get(i).getRoomId() == roomId) {
+					for (int j = 0; j < roomList.get(i).getDeviceList().size(); j++) {
 						roomIdList.add(roomList.get(i).getDeviceList().get(j).getDevId());
+
+						Device device = roomList.get(i).getDeviceList().get(j);
+
+						MqttMessage message = new MqttMessage();
+						String msg = "";
+						if (operation.equalsIgnoreCase("on")) {
+							msg = user.getAuthKey() + onOperation + "#" + device.getDevType();
+						} else {
+							msg = user.getAuthKey() + offOperation + "#" + device.getDevType();
+
+						}
+						message.setPayload(msg.getBytes());
+
+						if (!client.isConnected()) {
+
+							client.connect();
+
+						}
+						client.publish(device.getDevMac() + publishTopic, message);
+
 					}
 					break;
 				}
 			}
-			
+
+			System.out.println(roomIdList);
+
+			client.disconnect();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return roomIdList;
+	}
+
+	@RequestMapping(value = "/selectAllSchedulerCheckBox", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Integer> selectAllSchedulerCheckBox(HttpServletRequest request, HttpServletResponse response) {
+
+		List<Integer> roomIdList = new ArrayList<Integer>();
+		try {
+
+			int roomId = Integer.parseInt(request.getParameter("roomId"));
+
+			for (int i = 0; i < roomList.size(); i++) {
+				if (roomList.get(i).getRoomId() == roomId) {
+					for (int j = 0; j < roomList.get(i).getDeviceList().size(); j++) {
+						roomIdList.add(roomList.get(i).getDeviceList().get(j).getDevId());
+
+					}
+				}
+			}
+
 			System.out.println(roomIdList);
 
 		} catch (Exception e) {
@@ -155,7 +333,7 @@ public class HomeController {
 
 		return roomIdList;
 	}
-	
+
 	@RequestMapping(value = "/setScheduler", method = RequestMethod.GET)
 	public @ResponseBody ErrorMessage setScheduler(HttpServletRequest request, HttpServletResponse response) {
 
@@ -167,42 +345,38 @@ public class HomeController {
 			String scheduleTime = request.getParameter("scheduleTime");
 			int daily = Integer.parseInt(request.getParameter("daily"));
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
-			int devId = Integer.parseInt(request.getParameter("devId")); 
+			int devId = Integer.parseInt(request.getParameter("devId"));
 			int onOFF = Integer.parseInt(request.getParameter("onOFF"));
-			
+
 			System.out.println(scheduleTime);
 			System.out.println(daily);
 			System.out.println(roomId);
 			System.out.println(devId);
 			List<Scheduler> insert = new ArrayList<Scheduler>();
 			Scheduler scheduler = new Scheduler();
-			for(int i = 0;i<roomList.size();i++)
-			{
-				if(roomList.get(i).getRoomId()==roomId)
-				{
-					for(int j=0 ; j<roomList.get(i).getDeviceList().size();j++)
-					{
-						if(roomList.get(i).getDeviceList().get(j).getDevId()==devId)
-						{
-							
+			for (int i = 0; i < roomList.size(); i++) {
+				if (roomList.get(i).getRoomId() == roomId) {
+					for (int j = 0; j < roomList.get(i).getDeviceList().size(); j++) {
+						if (roomList.get(i).getDeviceList().get(j).getDevId() == devId) {
+
 							scheduler.setDay(daily);
 							scheduler.setDevMac(roomList.get(i).getDeviceList().get(j).getDevMac());
 							scheduler.setDevType(roomList.get(i).getDeviceList().get(j).getDevType());
 							scheduler.setOperation(onOFF);
 							scheduler.setSchStatus(1);
-							scheduler.setTime(scheduleTime+":00");
-							scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId()); 
+							scheduler.setTime(scheduleTime + ":00");
+							scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId());
 							insert.add(scheduler);
 						}
 					}
 				}
 			}
 
-			 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			map.add("schedulerList", insert);
-			
+
 			System.out.println(scheduler);
-			errorMessage = rest.postForObject(Constants.url + "/setNewScheduler", insert, ErrorMessage.class); 
+			errorMessage = rest.postForObject(Constants.url + "/setNewScheduler", insert, ErrorMessage.class);
 			System.out.println(errorMessage);
 
 		} catch (Exception e) {
@@ -211,7 +385,7 @@ public class HomeController {
 
 		return errorMessage;
 	}
-	
+
 	@RequestMapping(value = "/setSchedulerForAll", method = RequestMethod.GET)
 	public @ResponseBody ErrorMessage setSchedulerForAll(HttpServletRequest request, HttpServletResponse response) {
 
@@ -222,40 +396,51 @@ public class HomeController {
 
 			String scheduleTime = request.getParameter("scheduleTime");
 			String selected = request.getParameter("selected");
-			int daily = Integer.parseInt(request.getParameter("daily")); 
+			String selectedDivId = request.getParameter("selectedDivId");
+			int daily = Integer.parseInt(request.getParameter("daily"));
 			int onOFF = Integer.parseInt(request.getParameter("onOFF"));
-			selected = selected.substring(1, selected.length()); 
+
+			selectedDivId = selectedDivId.substring(1, selectedDivId.length());
+			selected = selected.substring(1, selected.length());
+
+			String[] divId = selectedDivId.split(",");
 			String[] roomId = selected.split(",");
-			  
+
 			List<Scheduler> insert = new ArrayList<Scheduler>();
-			
-			 for(int i = 0;i<roomList.size();i++)
-			{
-				for(int k=0;k<roomId.length;k++)
-				{	  
-					if(roomList.get(i).getRoomId()==Integer.parseInt(roomId[k]))
-					{	 
-						for(int j=0 ; j<roomList.get(i).getDeviceList().size();j++)
-						{ 
-							Scheduler scheduler = new Scheduler();
-								scheduler.setDay(daily);
-								scheduler.setDevMac(roomList.get(i).getDeviceList().get(j).getDevMac());
-								scheduler.setDevType(roomList.get(i).getDeviceList().get(j).getDevType());
-								scheduler.setOperation(onOFF);
-								scheduler.setSchStatus(1);
-								scheduler.setTime(scheduleTime+":00");
-								scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId()); 
-								insert.add(scheduler);
-						 
+
+			for (int i = 0; i < roomList.size(); i++) {
+
+				for (int k = 0; k < roomId.length; k++) {
+					if (roomList.get(i).getRoomId() == Integer.parseInt(roomId[k])) {
+						for (int j = 0; j < roomList.get(i).getDeviceList().size(); j++) {
+
+							for (int m = 0; m < divId.length; m++) {
+								if (roomList.get(i).getDeviceList().get(j).getDevId() == Integer.parseInt(divId[m])) {
+									Scheduler scheduler = new Scheduler();
+									scheduler.setDay(daily);
+									scheduler.setDevMac(roomList.get(i).getDeviceList().get(j).getDevMac());
+									scheduler.setDevType(roomList.get(i).getDeviceList().get(j).getDevType());
+									scheduler.setOperation(onOFF);
+									scheduler.setSchStatus(1);
+									scheduler.setTime(scheduleTime + ":00");
+									scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId());
+									insert.add(scheduler);
+									break;
+
+								}
+							}
+
 						}
-						 
+
+						break;
+
 					}
 				}
-				
-			} 
 
-			 System.out.println(insert); 
-			errorMessage = rest.postForObject(Constants.url + "/setNewScheduler", insert, ErrorMessage.class); 
+			}
+
+			System.out.println(insert);
+			errorMessage = rest.postForObject(Constants.url + "/setNewScheduler", insert, ErrorMessage.class);
 			System.out.println(errorMessage);
 
 		} catch (Exception e) {
