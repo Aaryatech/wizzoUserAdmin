@@ -35,16 +35,32 @@
 
 <!--rightNav-->
 
-
+<style type="text/css">
+.bg-overlay {
+    background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("${pageContext.request.contextPath}/resources/images/smart.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    height:auto;
+    width:auto;
+    padding-top: 0px;
+}
+</style>
 </head>
-<body>
+<body class="container bg-overlay">
 
+<div align="left" style="padding-left: 35px;padding-top: 10px;">
+					<img src="${pageContext.request.contextPath}/resources/images/ic_launcher.png" width="90px" height="90px" alt="WIZZO">
+					
+				<p  style="padding-left: 20px;">WIZZO</p>
+				</div>
 	<!--wrapper-start-->
 	<div class="wrapper">
 
 
 
-		<!--topHeader-->
+	<%-- 	<!--topHeader-->
 		<div class="fullGrid center logoBarbg slideposi">
 			<div class="wrapperIn positionR">
 				<div class="logoBarLeft">
@@ -56,19 +72,19 @@
 					<div id="menuzord" class="menuzord red menuzord-responsive">
 						<ul
 							class="menuzord-menu menuzord-right menuzord-indented scrollable">
-							<%--  <li><a href="#"><div class="usericon">John doe</div> <div class="userimg"><img src="${pageContext.request.contextPath}/resources/images/userimg.jpg"></div> </a>
+							 <li><a href="#"><div class="usericon">John doe</div> <div class="userimg"><img src="${pageContext.request.contextPath}/resources/images/userimg.jpg"></div> </a>
                 	<ul class="dropdown">
                         <li><a href="#">My Account</a></li>
 						<li><a href="#">Edit Profile</a></li>
 						<li><a href="#">Setting</a></li>
 						<li><a href="#">Log out</a></li>
 					</ul>
-                </li> --%>
+                </li>
 						</ul>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 		<!--topHeader-->
 
 		<!--rightContainer-->
@@ -87,11 +103,11 @@
 </form> -->
 
 
-				<c:if test="${not empty message}">
+			<%-- 	<c:if test="${not empty message}">
 					<!-- here would be a message with a result of processing -->
 					<div class="messages messagesErr">${message}</div>
 
-				</c:if>
+				</c:if> --%>
 
 
 				<form id="form-login" action="loginProcess" method="post">
@@ -99,11 +115,11 @@
 						<h2>
 							Login to your <span>Account</span>
 						</h2>
-						<div class="loginBox">
+						<!-- <div class="loginBox"> -->
 							<div class="loginUser">
-								<img
+								<%-- <img
 									src="${pageContext.request.contextPath}/resources/images/loginuser.png"
-									align="img">
+									align="img"> --%>
 							</div>
 							<form action="login" class="form-horizontal" id="validation-form"
 								method="post">
@@ -135,7 +151,7 @@
 									</div>
 								</div>
 							</form>
-						</div>
+						<!-- </div> -->
 
 						<%-- <div class="loginBox">
 		<div class="loginUser"><img src="${pageContext.request.contextPath}/resources/images/loginuser.png" align="img"></div>

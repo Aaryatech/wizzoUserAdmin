@@ -1,14 +1,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<!DOCTYPE html>
+<html>
+<head>
 <style>
 .pageTitle {
 	margin-top: 0px;
 }
+#aa:hover{
+  background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url("${pageContext.request.contextPath}/resources/images/smarthome.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    height:auto;
+    width:auto;
+}
 </style>
-<%-- <!DOCTYPE html>
-<html>
-<head>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<%-- 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
@@ -36,12 +50,8 @@
 	});
 </script>
 <!--rightNav-->
+--%>
 
-</head>
-<body> comment by sachin --%>
-<div id="overlay">
-	<div id="text">Please Wait...</div>
-</div>
 <style type="text/css">
 .fit-img {
 	position: absolute;
@@ -91,61 +101,59 @@ div.desc {
 
 <style>
 .switch {
-	position: relative;
-	display: inline-block;
-	width: 50px;
-	height: 20px;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 31px;
 }
 
-.switch input {
-	display: none;
-}
+.switch input {display:none;}
 
 .slider {
-	position: absolute;
-	cursor: pointer;
-	top: -2;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #a98f8f;
-	-webkit-transition: .4s;
-	transition: .4s;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #9a8585;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
 .slider:before {
-	position: absolute;
-	content: "";
-	height: 20px;
-	width: 20px;
-	left: 3px;
-	bottom: 1px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
+  position: absolute;
+  content: "";
+  height: 23px;
+  width: 24px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-input:checked+.slider {
-	background-color: #2196F3;
+input:checked + .slider {
+  background-color: #2196F3;
 }
 
-input:focus+.slider {
-	box-shadow: 0 0 1px #2196F3;
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked+.slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 /* Rounded sliders */
 .slider.round {
-	border-radius: 34px;
+  border-radius: 34px;
 }
 
 .slider.round:before {
-	border-radius: 50%;
+  border-radius: 50%;
 }
 </style>
 <style>
@@ -215,8 +223,23 @@ body {
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
 }
+.bg-overlay {
+    background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("${pageContext.request.contextPath}/resources/images/smart.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    height:auto;
+    width:auto;
+    padding-top: 10px;
+    padding-left:20px;
+}
 </style>
-
+</head>
+<body class=" bg-overlay">
+<div id="overlay">
+	<div id="text">Please Wait...</div>
+</div>
 <c:url var="allSwitchOnOff" value="/allSwitchOnOff"></c:url>
 <c:url var="setScheduler" value="/setScheduler"></c:url>
 <c:url var="setSchedulerForAll" value="/setSchedulerForAll"></c:url>
@@ -228,60 +251,85 @@ body {
 <!--topLeft-nav-->
 <!-- <div class="sidebarOuter"></div> -->
 <!--topLeft-nav-->
-
+	<!--topHeader-->
+	<div class="row">
+<div  class="col-md-2" align="left" style="padding-left: 0px;padding-top:0px;">
+					<img src="${pageContext.request.contextPath}/resources/images/ic_launcher.png" width="90px" height="90px" alt="WIZZO">
+					
+				<p  style="padding-left:20px;">WIZZO</p>
+				
+				</div>
+				  <div class="userimg" align="right" style="padding-top:10px; padding-right: 26px;"> 	<i  style="font-size:0px" id="myBtn"
+						onclick="popupMsgForAll()">									<img src="${pageContext.request.contextPath}/resources/images/schedule.png" width="4%" height="4%" alt="Schedule"  data-toggle="tooltip" title="Set Scheduler to Multiple Switches">
+						</i>
+			
+			  
+			  	<a href="${pageContext.request.contextPath}/logout" style="color:white;">
+              
+                <img src="${pageContext.request.contextPath}/resources/images/logout1.png"  height="6%" width="6%" this.src='${pageContext.request.contextPath}/resources/images/user.png'" data-toggle="tooltip" title="LOGOUT">
+                </a></div>
+				</div>
 <!--wrapper-start-->
 <div class="wrapper">
 
-	<!--topHeader-->
-	<jsp:include page="/WEB-INF/views/include/logo.jsp">
-
-		<jsp:param name="fr" value="${frDetails}" />
-	</jsp:include>
-
-
-
-	<header> </header>
-	<!--topHeader-->
-
+<%-- 	<div align="right">
+					<i  style="font-size:0px" id="myBtn"
+						onclick="popupMsgForAll()">									<img src="${pageContext.request.contextPath}/resources/images/schedule_off_icon.png" width="6%" height="6%" alt="Schedule">
+						</i>
+				</div>
+ --%>
 	<!--rightContainer-->
 	<div class="fullGrid center">
 		<!--fullGrid-->
-		<div class="wrapperIn2">
+		<div class="wrapperIn2" style="padding-top: 12px;">
 
-			<div>
-				<div align="right">
-					<i class="fa fa-clock-o" style="font-size: 100px" id="myBtn"
-						onclick="popupMsgForAll()"></i>
-				</div>
-				<div style="overflow-x: scroll; width: auto;">
+			<!-- <div> -->
+			
+			
+				<div style="overflow-x: scroll; width: 100%; ">
 					<!--    style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;" -->
 
-					<table style="overflow-x: scroll; width: auto; color: #fff;">
+					<table style="overflow-x: scroll; width: 100%; border-collapse: initial;border-spacing:3px;">
 						<tr>
 
 							<c:forEach items="${roomList}" var="roomList" varStatus="count">
 							<c:set var="on" value="on"></c:set>
 										<c:set var="off" value="off"></c:set>
-								<td
-									style="background-color: #202522; width: 500px; padding-left: 12px; border: 1px solid white;">
+								<td id="aa"
+									style="min-width: 300px;  padding-left: 12px; border: 1px solid white; ">
 									<c:choose>
 										<c:when test="${roomList.deviceList.size()>0}">
 
 										</c:when>
-									</c:choose> <br>
-									<h2 align="center">${roomList.roomName}</h2> <br> <c:choose>
+									</c:choose> <br><h2 align="center"><c:choose><c:when test="${roomList.roomIcon eq 'K' }">
+									<img src="${pageContext.request.contextPath}/resources/images/kitchen_icon.png" width="14%" height="14%" alt="Kitchen">
+									</c:when>
+									<c:when test="${roomList.roomIcon eq 'LR' }">
+									<img src="${pageContext.request.contextPath}/resources/images/living_room_icon.png" width="14%" height="14%" alt="Kitchen">
+									</c:when>
+									<c:when test="${roomList.roomIcon eq 'MB' }">
+									<img src="${pageContext.request.contextPath}/resources/images/master_bedroom_icon.png" width="14%" height="14%" alt="Kitchen">
+									</c:when>
+									<c:when test="${roomList.roomIcon eq 'B' }">
+									<img src="${pageContext.request.contextPath}/resources/images/bedroom_icon.png" width="14%" height="14%" alt="Kitchen">
+									</c:when>
+									</c:choose>
+									${roomList.roomName}
+									
+									</h2> <br> <c:choose>
 										<c:when test="${roomList.deviceList.size()>0}">
 											<table style="border: 0px solid white; color: #fff;">
 												<tr>
 													<td>
-														<div style="padding-right: 5px;">
+														 <div style="padding-right: 5px;padding-bottom: 10px;">
 															<input type="checkbox" value="${roomList.roomId}"
 																id="allScheduler${roomList.roomId}" name="allScheduler"
 																onchange="selectAllScheduler(${roomList.roomId});">
 														</div>
-													<td align="left" style="width: 300px; padding-right: 5px;">All
+														 
+													<td align="left" style="width: 320px; padding-right: 5px; font-size: 16px;font-weight: bold;"><label for="allScheduler${roomList.roomId}">All</label></td>
 													
-													<td align="right" style="padding-right: 12px; padding-left: 10px;">
+													<td align="right" style="padding-right: 12px; padding-left: 10px; font-size: 16px; font-weight: bold;">
 														<label class="switch"> 
 														<c:set var="allSts" value="1"></c:set>
 														<c:set var="in" value="0"></c:set>
@@ -311,13 +359,13 @@ body {
 														 <c:choose>
 														 	<c:when test="${allSts==0}">
 														 	<input type="checkbox" id="switchAll${roomList.roomId}"
-															onchange="allOnAndOff(${roomList.roomId});"  >
+															onchange="allOnAndOff(${roomList.roomId});" style="height: 10px;" >
 														 	</c:when>
 														 	<c:when test="${allSts==1}">
 														 		<c:choose>
 														 			<c:when test="${currentStatusList.size()!=0}">
 														 				<input type="checkbox" id="switchAll${roomList.roomId}"
-																	onchange="allOnAndOff(${roomList.roomId});" checked>
+																	onchange="allOnAndOff(${roomList.roomId});" style="height: 10px;"  checked>
 														 			</c:when>
 														 		</c:choose>
 																 	
@@ -335,24 +383,24 @@ body {
 											</table>
 										</c:when>
 										<c:otherwise>
-											<div align="center">No Switch</div>
+											<div align="center" style="font-size: 16px; font-weight: bold;">No Switch</div>
 										</c:otherwise>
 
 									</c:choose><br>
 								<br> <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
 										
 										 		
-										<table style="border: 0px solid white; color: #fff;">
+										<table style="border: 0px solid white; color: #fff; font-size: 16px; font-weight: bold;">
 											<tr>
 												<td align="left"
 													style="padding-bottom: 10px; padding-right: 5px;"><input
 													type="checkbox" value="${deviceList.devId}"
 													name="scheduler" id="scheduler${deviceList.devId}"></td>
-												<td align="left" style="width: 300px; padding-bottom: 10px;">${deviceList.devCaption}
+												<td align="left" style="width: 300px; padding-bottom: 1px;"><label for="scheduler${deviceList.devId}">${deviceList.devCaption}</label>
 												</td>
 												<td style="padding-bottom: 10px;"><i
 													class="fa fa-clock-o" style="font-size: 24px"
-													id="myBtn${deviceList.devId}"
+													id="myBtn${deviceList.devId}" data-toggle="tooltip" title="Set Scheduler"
 													onclick="popupMsg(${deviceList.devId})"></i>
 
 													<div id="myModal${deviceList.devId}" class="modal">
@@ -428,11 +476,11 @@ body {
 																<c:choose>
 																	<c:when test="${currentStatusList.status eq on}">
 																	<input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}"
-														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" checked> 
+														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" style="height: 10px;"  checked> 
 																	</c:when>
 																	<c:when test="${currentStatusList.status eq off}">
 																	<input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}"
-														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});">
+														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" style="height: 10px;" >
 																	</c:when>
 																	
 																</c:choose>
@@ -465,7 +513,7 @@ body {
 
 				<div id="myModal" class="modal">
 
-					<div class="modal-content">
+					<div class="modal-content" style="color: black;">
 						<span class="close" id="close">&times;</span>
 						<h3 style="text-align: center;">Set Scheduler To All..</h3>
 
@@ -520,7 +568,7 @@ body {
 				<!-- The Modal -->
 
 
-			</div>
+			<!-- </div> -->
 
 			<!--latestNews-->
 

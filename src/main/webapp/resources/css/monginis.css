@@ -28,7 +28,7 @@ a:hover{ text-decoration:none; color:#343690;}
 
 .wrapper{ width:100%; float:left; min-height:740px;}
 .wrapperIn{ width:100%; display:inline-block; vertical-align:top;}
-.wrapperIn2{ width:100%; display:inline-block; vertical-align:top; padding-top:120px;}
+.wrapperIn2{ width:100%; display:inline-block; vertical-align:top; padding-top:50px;}
 
 * {	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
 :before, :after {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
@@ -368,10 +368,10 @@ filter: alpha(opacity=0); width:100%; height:33px;}
 .err{ font-size:13px; color:#e32139; margin-top:3px;}
 
 .loginInner{ width:100%; float:left; padding:40px 33%;}
-.loginInner h2{width:100%; float:left; padding-bottom:25px; text-align:center; color:#444; font-size:18px;}
+.loginInner h2{width:100%; float:left; padding-bottom:25px; text-align:center; color:#e8e8e8; font-size:18px;}
 .loginInner h3{width:100%; float:left; padding:10px; text-align:center; color:#444; font-size:18px;}
 
-.loginInner h2 span{ display:block; color:#ec268f; font-size:36px;}
+.loginInner h2 span{ display:block; color:#46d4a9; font-size:36px;}
 .loginBox{ width:100%; float:left; background:#f6f6f6; border:2px solid #ccc; padding:40px 30px 20px 30px;-webkit-border-radius:10px;-moz-border-radius:10px;-o-border-radius:10px;-ms-border-radius:10px;border-radius:10px; margin-top:40px; position:relative;
 border:5px solid #fff;
 -webkit-box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.25);
@@ -389,12 +389,12 @@ box-shadow:         0px 2px 14px 0px rgba(0, 0, 0, 0.25); margin-bottom:20px;}
 .texboxlogin:focus, input:focus{outline: 0;}
 .texboxlogin *:focus {outline: 0;}
 @media screen and (-webkit-min-device-pixel-ratio:0) {::i-block-chrome, .texboxitemcode{ line-height:16px;}}
-.buttonlogin{background:#ec268f;text-align:center; margin:0px; padding:8px 15px;cursor:pointer;border:2px solid #ec268f; color:#fff; font-size:16px; width:100%; line-height:20px; font-weight:bold; -webkit-border-radius:5px;-moz-border-radius:5px;
+.buttonlogin{background:#7ead73;text-align:center; margin:0px; padding:8px 15px;cursor:pointer;border:2px solid #7ead73; color:#fff; font-size:16px; width:100%; line-height:20px; font-weight:bold; -webkit-border-radius:5px;-moz-border-radius:5px;
 -o-border-radius:5px;-ms-border-radius:5px;border-radius:5px;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
-.buttonlogin:hover{background:#343690;border:2px solid #343690;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
-.logintexboxleft{ float:left; text-align:left; font-size:13px; color:#343690;}
-.logintexboxleft a{ text-decoration:none; color:#343690;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
-.logintexboxleft a:hover{ text-decoration:none; color:#ec268f;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
+.buttonlogin:hover{background:#348890;border:2px solid #348890;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
+.logintexboxleft{ float:left; text-align:left; font-size:13px; color:#fafafd;}
+.logintexboxleft a{ text-decoration:none; color:#ffffff;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
+.logintexboxleft a:hover{ text-decoration:none; color:#0192e0;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
 
 .checkbox {
     float:right;
@@ -418,7 +418,7 @@ label:before {
 .radio label:before {
 	border-radius: 8px;
 }
-.checkbox label { padding-left:20px; font-size:13px; color:#333; cursor:pointer;}
+.checkbox label { padding-left:20px; font-size:13px; color:#f5e6e6; cursor:pointer;}
 .checkbox label:before {
     border-radius: 3px;
 }

@@ -33,13 +33,27 @@
 </script>
 
 
-
-<!--rightNav-->
-
-
+<style type="text/css">
+.bg-overlay {
+    background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("${pageContext.request.contextPath}/resources/images/smart.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    height:auto;
+    width:auto;
+    padding-top: 0px;
+}
+</style>
 </head>
-<body>
+<body class="container bg-overlay">
 
+
+<div align="left" style="padding-left: 25px;padding-top: 10px;">
+					<img src="${pageContext.request.contextPath}/resources/images/ic_launcher.png" width="90px" height="90px" alt="WIZZO">
+					
+				<p  style="padding-left: 20px;">WIZZO</p>
+				</div>
 	<c:url var="generateOtp" value="generateOtp"></c:url>
 
 	<!--wrapper-start-->
@@ -48,7 +62,7 @@
 
 
 		<!--topHeader-->
-		<div class="fullGrid center logoBarbg slideposi">
+	<%-- 	<div class="fullGrid center logoBarbg slideposi">
 			<div class="wrapperIn positionR">
 				<div class="logoBarLeft">
 					<a href=""><img
@@ -59,19 +73,19 @@
 					<div id="menuzord" class="menuzord red menuzord-responsive">
 						<ul
 							class="menuzord-menu menuzord-right menuzord-indented scrollable">
-							<%--  <li><a href="#"><div class="usericon">John doe</div> <div class="userimg"><img src="${pageContext.request.contextPath}/resources/images/userimg.jpg"></div> </a>
+							 <li><a href="#"><div class="usericon">John doe</div> <div class="userimg"><img src="${pageContext.request.contextPath}/resources/images/userimg.jpg"></div> </a>
                 	<ul class="dropdown">
                         <li><a href="#">My Account</a></li>
 						<li><a href="#">Edit Profile</a></li>
 						<li><a href="#">Setting</a></li>
 						<li><a href="#">Log out</a></li>
 					</ul>
-                </li> --%>
+                </li>
 						</ul>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 		<!--topHeader-->
 
 		<!--rightContainer-->
@@ -90,11 +104,11 @@
 </form> -->
 
 
-				<c:if test="${not empty message}">
+				<%-- <c:if test="${not empty message}">
 					<!-- here would be a message with a result of processing -->
 					<div class="messages messagesErr">${message}</div>
 
-				</c:if>
+				</c:if> --%>
 
 
 				<form id="form-login" action="login" method="post">
@@ -102,11 +116,11 @@
 						<h2>
 							Login to your <span>Account</span>
 						</h2>
-						<div class="loginBox">
+						<!-- <div class="loginBox"> -->
 							<div class="loginUser">
-								<img
+								<%-- <img
 									src="${pageContext.request.contextPath}/resources/images/loginuser.png"
-									align="img">
+									align="img"> --%>
 							</div>
 
 
@@ -120,6 +134,13 @@
 								type="button" onclick="checkOTP();"> <input id="sotp"
 								name="sotp" type="hidden"> <input id="userId"
 								name="userId" type="hidden">
+								
+								<div class="loginfildset">
+									<div class="logintexboxleft">
+										<a href="${pageContext.request.contextPath}/">
+											< GO BACK</a>
+									</div>
+									</div>
 
 							<div id="hidden_div" style="display: none;">
 								<div class="loginfildset">
@@ -155,11 +176,12 @@
 										<input name="" class="buttonlogin" value="Submit"
 											type="submit" onclick="return Validate()">
 									</div>
+										
 								</div>
 
 							</div>
 				</form>
-			</div>
+		<!-- 	</div> -->
 
 			<%-- <div class="loginBox">
 		<div class="loginUser"><img src="${pageContext.request.contextPath}/resources/images/loginuser.png" align="img"></div>
