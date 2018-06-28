@@ -4,6 +4,9 @@
 	<!DOCTYPE html>
 <html>
 <head>
+<link rel="icon"
+	href="${pageContext.request.contextPath}/resources/images/ic_launcher.png"
+	type="image/x-icon" />
 <style>
 .pageTitle {
 	margin-top: 0px;
@@ -295,8 +298,8 @@ body {
 							<c:forEach items="${roomList}" var="roomList" varStatus="count">
 							<c:set var="on" value="on"></c:set>
 										<c:set var="off" value="off"></c:set>
-								<td id="aa"
-									style="min-width: 300px;  padding-left: 12px; border: 1px solid white; ">
+								<td id="aa" valign="top"
+									style="min-width: 300px; padding-left: 12px; border: 1px solid white; ">
 									<c:choose>
 										<c:when test="${roomList.deviceList.size()>0}">
 

@@ -12,7 +12,7 @@
 	href="${pageContext.request.contextPath}/resources/css/monginis.css"
 	rel="stylesheet" type="text/css" />
 <link rel="icon"
-	href="${pageContext.request.contextPath}/resources/images/feviconicon.png"
+	href="${pageContext.request.contextPath}/resources/images/ic_launcher.png"
 	type="image/x-icon" />
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
