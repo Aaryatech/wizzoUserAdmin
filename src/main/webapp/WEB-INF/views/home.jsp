@@ -337,7 +337,7 @@ body {
 														<c:set var="allSts" value="1"></c:set>
 														<c:set var="in" value="0"></c:set>
 														
-														 <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
+														  <%--  <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
 																	<c:forEach items="${currentStatusList}" var="currentStatusList" >
 																	<c:choose>
 																		<c:when test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType}">
@@ -357,9 +357,9 @@ body {
 																	 
 																</c:forEach>
 																 
-														 </c:forEach>
+														 </c:forEach>  
 														 
-														 <c:choose>
+														  <c:choose>
 														 	<c:when test="${allSts==0}">
 														 	<input type="checkbox" id="switchAll${roomList.roomId}"
 															onchange="allOnAndOff(${roomList.roomId});" style="height: 10px;" >
@@ -374,14 +374,13 @@ body {
 																 	
 														 	</c:when>
 														 	
-														 </c:choose>
-														 
-														 
-														<%-- <input type="checkbox" id="switchAll${roomList.roomId}"
-															onchange="allOnAndOff(${roomList.roomId});">  --%>
+														 </c:choose>    --%>
+														  
+													   <input type="checkbox" id="switchAll${roomList.roomId}"
+															onchange="allOnAndOff(${roomList.roomId});">   
 															
 															<span class="slider round"></span>
-													</label> </td>
+													</label></td>
 												</tr>
 											</table>
 										</c:when>
@@ -872,14 +871,31 @@ function setSchedulerForAll() {
 						{
 						for(var i =0 ;i<data.length;i++)
 						 { 
-						 document.getElementById("switch"+data[i]).checked = true;
+							try {
+						          
+								document.getElementById("switch"+data[i]).checked = true;
+						      } 
+						      
+						      catch ( e ) {
+						        
+						    	  document.getElementById("switchAll"+roomId).checked = false;
+						      }
+						 
 						 }
 						} 
 					else
 						{
 						for(var i =0 ;i<data.length;i++)
 						 { 
-						 document.getElementById("switch"+data[i]).checked = false;
+							try {
+						          
+								document.getElementById("switch"+data[i]).checked = false;
+						      } 
+							 catch ( e ) {
+							        
+								 document.getElementById("switchAll"+roomId).checked = false;
+						      }
+						 
 						 }
 						}
 					off();
