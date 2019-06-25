@@ -454,6 +454,8 @@ body {
 																		class="form-control"
 																		id="scheduleTime${deviceList.devId}" />
 																</div>
+															</div>
+															<div class="colOuter">
 																<div class="col-md-2">Is Daily*</div>
 																<%-- <div class="col-md-3">
 																	<select class="selectpicker" data-live-search="true"
@@ -467,30 +469,46 @@ body {
 
 																	</select>
 																</div> --%>
-																<div class="col-md-3">
+																<div class="col-md-1">
 																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDaysunday${deviceList.devId}"
-																		value="1" />Sunday <input type="checkbox"
+																		value="1" />Sunday
+																</div>
+																<div class="col-md-1">
+																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDayMonday${deviceList.devId}"
-																		value="2" />Monday <input type="checkbox"
+																		value="2" />Monday
+																</div>
+																<div class="col-md-1">
+																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDayTue${deviceList.devId}" value="3" />Tuesday
+																</div>
+																<div class="col-md-1">
 																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDayWed${deviceList.devId}" value="4" />Wednesday
+																</div>
+																<div class="col-md-1">
 																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDayThu${deviceList.devId}" value="5" />Thursday
+																</div>
+																<div class="col-md-1">
 																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDayFri${deviceList.devId}" value="6" />Friday
+																</div>
+																<div class="col-md-1">
 																	<input type="checkbox"
 																		name="scheduleTimeDay${deviceList.devId}"
 																		id="scheduleTimeDaySat${deviceList.devId}" value="7" />Saturday
 																</div>
+
 															</div>
+
 															<br>
 
 															<div class="colOuter">
@@ -544,6 +562,33 @@ body {
 																		</c:when>
 
 																	</c:choose>
+
+																	<%-- <c:choose>
+																		<c:when test="${deviceList.devType==678}">
+																			<input type="range" min="1" max="100" value="50">
+																		</c:when>
+																		<c:when
+																			test="${deviceList.devType==12 || deviceList.devType==13}">
+																			<input type="range" min="1" max="100" value="50">
+																		</c:when>
+																		<c:otherwise>
+																			<c:choose>
+																				<c:when test="${currentStatusList.status eq on}">
+																					<input type="checkbox" value="${deviceList.devId}"
+																						id="switch${deviceList.devId}"
+																						onchange="onAndOff(${deviceList.devId},${deviceList.roomId});"
+																						style="height: 10px;" checked>
+																				</c:when>
+																				<c:when test="${currentStatusList.status eq off}">
+																					<input type="checkbox" value="${deviceList.devId}"
+																						id="switch${deviceList.devId}"
+																						onchange="onAndOff(${deviceList.devId},${deviceList.roomId});"
+																						style="height: 10px;">
+																				</c:when>
+
+																			</c:choose>
+																		</c:otherwise>
+																	</c:choose> --%>
 
 																</c:when>
 
