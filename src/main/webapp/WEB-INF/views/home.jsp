@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="icon"
@@ -11,18 +11,23 @@
 .pageTitle {
 	margin-top: 0px;
 }
-#aa:hover{
-  background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url("${pageContext.request.contextPath}/resources/images/smarthome.jpeg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    color: #fff;
-    height:auto;
-    width:auto;
+
+#aa:hover {
+	background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),
+		url("${pageContext.request.contextPath}/resources/images/smarthome.jpeg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	color: #fff;
+	height: auto;
+	width: auto;
 }
 </style>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <%-- 
@@ -104,59 +109,61 @@ div.desc {
 
 <style>
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 31px;
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 31px;
 }
 
-.switch input {display:none;}
+.switch input {
+	display: none;
+}
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #9a8585;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #9a8585;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 23px;
-  width: 24px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	content: "";
+	height: 23px;
+	width: 24px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
-input:checked + .slider {
-  background-color: #2196F3;
+input:checked+.slider {
+	background-color: #2196F3;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+input:focus+.slider {
+	box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+input:checked+.slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+	border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+	border-radius: 50%;
 }
 </style>
 <style>
@@ -226,118 +233,141 @@ body {
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
 }
+
 .bg-overlay {
-    background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("${pageContext.request.contextPath}/resources/images/smart.jpeg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    color: #fff;
-    height:auto;
-    width:auto;
-    padding-top: 10px;
-    padding-left:20px;
+	background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)),
+		url("${pageContext.request.contextPath}/resources/images/smart.jpeg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	color: #fff;
+	height: auto;
+	width: auto;
+	padding-top: 10px;
+	padding-left: 20px;
 }
 </style>
 </head>
 <body class=" bg-overlay">
-<div id="overlay">
-	<div id="text">Please Wait...</div>
-</div>
-<c:url var="allSwitchOnOff" value="/allSwitchOnOff"></c:url>
-<c:url var="setScheduler" value="/setScheduler"></c:url>
-<c:url var="setSchedulerForAll" value="/setSchedulerForAll"></c:url>
-<c:url var="singleSwitchOnOff" value="/singleSwitchOnOff"></c:url>
-<c:url var="selectAllSchedulerCheckBox" value="/selectAllSchedulerCheckBox"></c:url>
+	<div id="overlay">
+		<div id="text">Please Wait...</div>
+	</div>
+	<c:url var="allSwitchOnOff" value="/allSwitchOnOff"></c:url>
+	<c:url var="setScheduler" value="/setScheduler"></c:url>
+	<c:url var="setSchedulerForAll" value="/setSchedulerForAll"></c:url>
+	<c:url var="singleSwitchOnOff" value="/singleSwitchOnOff"></c:url>
+	<c:url var="selectAllSchedulerCheckBox"
+		value="/selectAllSchedulerCheckBox"></c:url>
 
-<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
-<!--topLeft-nav-->
-<!-- <div class="sidebarOuter"></div> -->
-<!--topLeft-nav-->
+	<!--topLeft-nav-->
+	<!-- <div class="sidebarOuter"></div> -->
+	<!--topLeft-nav-->
 	<!--topHeader-->
 	<div class="row">
-<div  class="col-md-2" align="left" style="padding-left: 0px;padding-top:0px;">
-					<img src="${pageContext.request.contextPath}/resources/images/ic_launcher.png" width="90px" height="90px" alt="WIZZO">
-					
-				<p  style="padding-left:20px;">WIZZO</p>
-				
-				</div>
-				  <div class="userimg" align="right" style="padding-top:10px; padding-right: 26px;"> 	<i  style="font-size:0px" id="myBtn"
-						onclick="popupMsgForAll()">									<img src="${pageContext.request.contextPath}/resources/images/schedule.png" width="4%" height="4%" alt="Schedule"  data-toggle="tooltip" title="Set Scheduler to Multiple Switches">
-						</i>
-			
-			  
-			  	<a href="${pageContext.request.contextPath}/logout" style="color:white;">
-              
-                <img src="${pageContext.request.contextPath}/resources/images/logout1.png"  height="6%" width="6%" this.src='${pageContext.request.contextPath}/resources/images/user.png'" data-toggle="tooltip" title="LOGOUT">
-                </a></div>
-				</div>
-<!--wrapper-start-->
-<div class="wrapper">
+		<div class="col-md-2" align="left"
+			style="padding-left: 0px; padding-top: 0px;">
+			<img
+				src="${pageContext.request.contextPath}/resources/images/ic_launcher.png"
+				width="90px" height="90px" alt="WIZZO">
 
-<%-- 	<div align="right">
+			<p style="padding-left: 20px;">WIZZO</p>
+
+		</div>
+		<div class="userimg" align="right"
+			style="padding-top: 10px; padding-right: 26px;">
+			<i style="font-size: 0px" id="myBtn" onclick="popupMsgForAll()">
+				<img
+				src="${pageContext.request.contextPath}/resources/images/schedule.png"
+				width="4%" height="4%" alt="Schedule" data-toggle="tooltip"
+				title="Set Scheduler to Multiple Switches">
+			</i> <a href="${pageContext.request.contextPath}/logout"
+				style="color: white;"> <img
+				src="${pageContext.request.contextPath}/resources/images/logout1.png"
+				height="6%" width="6%"
+				this.src='${pageContext.request.contextPath}/resources/images/user.png'
+				" data-toggle="tooltip" title="LOGOUT">
+			</a>
+		</div>
+	</div>
+	<!--wrapper-start-->
+	<div class="wrapper">
+
+		<%-- 	<div align="right">
 					<i  style="font-size:0px" id="myBtn"
 						onclick="popupMsgForAll()">									<img src="${pageContext.request.contextPath}/resources/images/schedule_off_icon.png" width="6%" height="6%" alt="Schedule">
 						</i>
 				</div>
  --%>
-	<!--rightContainer-->
-	<div class="fullGrid center">
-		<!--fullGrid-->
-		<div class="wrapperIn2" style="padding-top: 12px;">
+		<!--rightContainer-->
+		<div class="fullGrid center">
+			<!--fullGrid-->
+			<div class="wrapperIn2" style="padding-top: 12px;">
 
-			<!-- <div> -->
-			
-			
-				<div style="overflow-x: scroll; width: 100%; ">
+				<!-- <div> -->
+
+
+				<div style="overflow-x: scroll; width: 100%;">
 					<!--    style="overflow-y:scroll; overflow-x:scroll; height:500px; width: 100%;" -->
 
-					<table style="overflow-x: scroll; width: 100%; border-collapse: initial;border-spacing:3px;">
+					<table
+						style="overflow-x: scroll; width: 100%; border-collapse: initial; border-spacing: 3px;">
 						<tr>
 
 							<c:forEach items="${roomList}" var="roomList" varStatus="count">
-							<c:set var="on" value="on"></c:set>
-										<c:set var="off" value="off"></c:set>
+								<c:set var="on" value="on"></c:set>
+								<c:set var="off" value="off"></c:set>
 								<td id="aa" valign="top"
-									style="min-width: 300px; padding-left: 12px; border: 1px solid white; ">
+									style="min-width: 300px; padding-left: 12px; border: 1px solid white;">
 									<c:choose>
 										<c:when test="${roomList.deviceList.size()>0}">
 
 										</c:when>
-									</c:choose> <br><h2 align="center"><c:choose><c:when test="${roomList.roomIcon eq 'K' }">
-									<img src="${pageContext.request.contextPath}/resources/images/kitchen_icon.png" width="14%" height="14%" alt="Kitchen">
-									</c:when>
-									<c:when test="${roomList.roomIcon eq 'LR' }">
-									<img src="${pageContext.request.contextPath}/resources/images/living_room_icon.png" width="14%" height="14%" alt="Kitchen">
-									</c:when>
-									<c:when test="${roomList.roomIcon eq 'MB' }">
-									<img src="${pageContext.request.contextPath}/resources/images/master_bedroom_icon.png" width="14%" height="14%" alt="Kitchen">
-									</c:when>
-									<c:when test="${roomList.roomIcon eq 'B' }">
-									<img src="${pageContext.request.contextPath}/resources/images/bedroom_icon.png" width="14%" height="14%" alt="Kitchen">
-									</c:when>
-									</c:choose>
-									${roomList.roomName}
-									
+									</c:choose> <br>
+									<h2 align="center">
+										<c:choose>
+											<c:when test="${roomList.roomIcon eq 'K' }">
+												<img
+													src="${pageContext.request.contextPath}/resources/images/kitchen_icon.png"
+													width="14%" height="14%" alt="Kitchen">
+											</c:when>
+											<c:when test="${roomList.roomIcon eq 'LR' }">
+												<img
+													src="${pageContext.request.contextPath}/resources/images/living_room_icon.png"
+													width="14%" height="14%" alt="Kitchen">
+											</c:when>
+											<c:when test="${roomList.roomIcon eq 'MB' }">
+												<img
+													src="${pageContext.request.contextPath}/resources/images/master_bedroom_icon.png"
+													width="14%" height="14%" alt="Kitchen">
+											</c:when>
+											<c:when test="${roomList.roomIcon eq 'B' }">
+												<img
+													src="${pageContext.request.contextPath}/resources/images/bedroom_icon.png"
+													width="14%" height="14%" alt="Kitchen">
+											</c:when>
+										</c:choose>
+										${roomList.roomName}
+
 									</h2> <br> <c:choose>
 										<c:when test="${roomList.deviceList.size()>0}">
 											<table style="border: 0px solid white; color: #fff;">
 												<tr>
 													<td>
-														 <div style="padding-right: 5px;padding-bottom: 10px;">
+														<div style="padding-right: 5px; padding-bottom: 10px;">
 															<input type="checkbox" value="${roomList.roomId}"
 																id="allScheduler${roomList.roomId}" name="allScheduler"
 																onchange="selectAllScheduler(${roomList.roomId});">
 														</div>
-														 
-													<td align="left" style="width: 320px; padding-right: 5px; font-size: 16px;font-weight: bold;"><label for="allScheduler${roomList.roomId}">All</label></td>
-													
-													<td align="right" style="padding-right: 12px; padding-left: 10px; font-size: 16px; font-weight: bold;">
-														<label class="switch"> 
-														<c:set var="allSts" value="1"></c:set>
-														<c:set var="in" value="0"></c:set>
-														
-														  <%--  <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
+													<td align="left"
+														style="width: 320px; padding-right: 5px; font-size: 16px; font-weight: bold;"><label
+														for="allScheduler${roomList.roomId}">All</label></td>
+
+													<td align="right"
+														style="padding-right: 12px; padding-left: 10px; font-size: 16px; font-weight: bold;">
+														<label class="switch"> <c:set var="allSts"
+																value="1"></c:set> <c:set var="in" value="0"></c:set> <%--  <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
 																	<c:forEach items="${currentStatusList}" var="currentStatusList" >
 																	<c:choose>
 																		<c:when test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType}">
@@ -374,35 +404,39 @@ body {
 																 	
 														 	</c:when>
 														 	
-														 </c:choose>    --%>
-														  
-													   <input type="checkbox" id="switchAll${roomList.roomId}"
-															onchange="allOnAndOff(${roomList.roomId});">   
-															
-															<span class="slider round"></span>
-													</label></td>
+														 </c:choose>    --%> <input type="checkbox"
+															id="switchAll${roomList.roomId}"
+															onchange="allOnAndOff(${roomList.roomId});"> <span
+															class="slider round"></span>
+													</label>
+													</td>
 												</tr>
 											</table>
 										</c:when>
 										<c:otherwise>
-											<div align="center" style="font-size: 16px; font-weight: bold;">No Switch</div>
+											<div align="center"
+												style="font-size: 16px; font-weight: bold;">No Switch</div>
 										</c:otherwise>
 
-									</c:choose><br>
-								<br> <c:forEach items="${roomList.deviceList}" var="deviceList" varStatus="count">
-										
-										 		
-										<table style="border: 0px solid white; color: #fff; font-size: 16px; font-weight: bold;">
+									</c:choose><br> <br> <c:forEach items="${roomList.deviceList}"
+										var="deviceList" varStatus="count">
+
+
+										<table
+											style="border: 0px solid white; color: #fff; font-size: 16px; font-weight: bold;">
 											<tr>
 												<td align="left"
 													style="padding-bottom: 10px; padding-right: 5px;"><input
 													type="checkbox" value="${deviceList.devId}"
 													name="scheduler" id="scheduler${deviceList.devId}"></td>
-												<td align="left" style="width: 300px; padding-bottom: 1px;"><label for="scheduler${deviceList.devId}">${deviceList.devCaption}</label>
-												</td>
+												<td align="left" style="width: 300px; padding-bottom: 1px;"><label
+													for="scheduler${deviceList.devId}">${deviceList.devCaption}
+														<%-- ${deviceList.devType} --%>
+												</label></td>
 												<td style="padding-bottom: 10px;"><i
 													class="fa fa-clock-o" style="font-size: 24px"
-													id="myBtn${deviceList.devId}" data-toggle="tooltip" title="Set Scheduler"
+													id="myBtn${deviceList.devId}" data-toggle="tooltip"
+													title="Set Scheduler"
 													onclick="popupMsg(${deviceList.devId})"></i>
 
 													<div id="myModal${deviceList.devId}" class="modal">
@@ -421,7 +455,7 @@ body {
 																		id="scheduleTime${deviceList.devId}" />
 																</div>
 																<div class="col-md-2">Is Daily*</div>
-																<div class="col-md-3">
+																<%-- <div class="col-md-3">
 																	<select class="selectpicker" data-live-search="true"
 																		title="Please Select" name="daily${deviceList.devId}"
 																		id="daily${deviceList.devId}">
@@ -432,10 +466,29 @@ body {
 
 
 																	</select>
-
-																	<%-- <input type="radio" id="daily${deviceList.devId}" name="daily${deviceList.devId}" value="0" checked> NO 
-  																	<input type="radio" id="daily${deviceList.devId}" name="daily${deviceList.devId}"   value="1"> YES  --%>
-
+																</div> --%>
+																<div class="col-md-3">
+																	<input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDaysunday${deviceList.devId}"
+																		value="1" />Sunday <input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDayMonday${deviceList.devId}"
+																		value="2" />Monday <input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDayTue${deviceList.devId}" value="3" />Tuesday
+																	<input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDayWed${deviceList.devId}" value="4" />Wednesday
+																	<input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDayThu${deviceList.devId}" value="5" />Thursday
+																	<input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDayFri${deviceList.devId}" value="6" />Friday
+																	<input type="checkbox"
+																		name="scheduleTimeDay${deviceList.devId}"
+																		id="scheduleTimeDaySat${deviceList.devId}" value="7" />Saturday
 																</div>
 															</div>
 															<br>
@@ -468,37 +521,40 @@ body {
 														</div>
 
 													</div></td>
-													
+
 												<td align="right"
 													style="padding-right: 12px; padding-left: 10px; padding-bottom: 10px;">
-													<label class="switch"> 
-													  <c:forEach items="${currentStatusList}" var="currentStatusList" >
-														<c:choose>
-															<c:when test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType}">
-																<c:choose>
-																	<c:when test="${currentStatusList.status eq on}">
-																	<input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}"
-														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" style="height: 10px;"  checked> 
-																	</c:when>
-																	<c:when test="${currentStatusList.status eq off}">
-																	<input type="checkbox" value="${deviceList.devId}" id="switch${deviceList.devId}"
-														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" style="height: 10px;" >
-																	</c:when>
-																	
-																</c:choose>
-															
-															</c:when>
-														
-														</c:choose>
-										
-													</c:forEach>
-													<%-- 
+													<label class="switch"> <c:forEach
+															items="${currentStatusList}" var="currentStatusList">
+															<c:choose>
+																<c:when
+																	test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType}">
+																	<c:choose>
+																		<c:when test="${currentStatusList.status eq on}">
+																			<input type="checkbox" value="${deviceList.devId}"
+																				id="switch${deviceList.devId}"
+																				onchange="onAndOff(${deviceList.devId},${deviceList.roomId});"
+																				style="height: 10px;" checked>
+																		</c:when>
+																		<c:when test="${currentStatusList.status eq off}">
+																			<input type="checkbox" value="${deviceList.devId}"
+																				id="switch${deviceList.devId}"
+																				onchange="onAndOff(${deviceList.devId},${deviceList.roomId});"
+																				style="height: 10px;">
+																		</c:when>
+
+																	</c:choose>
+
+																</c:when>
+
+															</c:choose>
+
+														</c:forEach> <%-- 
 													 <input type="checkbox"
 														value="${deviceList.devId}" id="switch${deviceList.devId}"
 														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" checked> --%>
-														
-														<span
-														class="slider round"></span>
+
+														<span class="slider round"></span>
 												</label>
 												</td>
 											</tr>
@@ -525,7 +581,7 @@ body {
 								<input type="time" name="scheduleTime" class="form-control"
 									id="scheduleTime" />
 							</div>
-							<div class="col-md-2">Daily*</div>
+							<!-- <div class="col-md-2">Daily*</div>
 							<div class="col-md-3">
 								<select class="selectpicker" data-live-search="true"
 									title="Please Select" name="daily" id="daily">
@@ -536,7 +592,39 @@ body {
 
 
 								</select>
+							</div> -->
+						</div>
+						<div class="colOuter">
+							<div class="col-md-2">Select Day*</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDaysunday" value="1" />Sunday
 							</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDayMonday" value="2" />Monday
+							</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDayTue" value="3" />Tuesday
+							</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDayWed" value="4" />Wednesday
+							</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDayThu" value="5" />Thursday
+							</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDayFri" value="6" />Friday
+							</div>
+							<div class="col-md-1">
+								<input type="checkbox" name="scheduleTimeDay"
+									id="scheduleTimeDaySat" value="7" />Saturday
+							</div>
+
 						</div>
 						<br>
 
@@ -570,20 +658,20 @@ body {
 				<!-- The Modal -->
 
 
-			<!-- </div> -->
+				<!-- </div> -->
 
-			<!--latestNews-->
+				<!--latestNews-->
+
+			</div>
+			<!--rightSidebar-->
 
 		</div>
-		<!--rightSidebar-->
-
+		<!--fullGrid-->
 	</div>
-	<!--fullGrid-->
-</div>
-<!--rightContainer-->
+	<!--rightContainer-->
 
-<!--wrapper-end-->
-<!-- <footer>
+	<!--wrapper-end-->
+	<!-- <footer>
 	<div class="colOuter">
 						<div align="right">
 							<i class="fa fa-clock-o" style="font-size:100px" id="myBtn" onclick="popupMsgForAll()"></i>
@@ -593,9 +681,9 @@ body {
 	
 	</footer> -->
 
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
+	<script type="text/javascript"
+		src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
 function on() {
     document.getElementById("overlay").style.display = "block";
 }
@@ -604,7 +692,7 @@ function off() {
     document.getElementById("overlay").style.display = "none";
 }
 </script>
-<script>
+	<script>
   function popupMsg(devId) {
 		 
 		 /*  alert("first "+devId); */
@@ -646,7 +734,7 @@ function off() {
 }
 
 </script>
-<script>
+	<script>
 // Get the modal
 var modal = document.getElementById('myModal');
 
@@ -680,12 +768,20 @@ window.onclick = function(event) {
 }
 </script>
 
-<script type="text/javascript">
+	<script type="text/javascript">
   
   function setScheduler(devId,roomId) {
 	  
 	  var scheduleTime = $("#scheduleTime"+devId).val();
-	  var daily = $("#daily"+devId).val();
+	  //var daily = $("#daily"+devId).val();
+	  var dayschecked = document.getElementsByName('scheduleTimeDay'+devId);
+	  var days = "";
+	  for (var i=0; i<dayschecked.length; i++) {
+	      if (dayschecked[i].checked) {
+	    	  days=days+dayschecked[i].value;
+	      }
+	  }
+	  
 	  var onOFF = $("#onOFF"+devId).val();
 	   
 		on();
@@ -697,7 +793,7 @@ window.onclick = function(event) {
 						{
 							 
 							scheduleTime : scheduleTime, 
-							daily : daily,
+							daily : days,
 							roomId : roomId,
 							devId : devId,
 							onOFF : onOFF,
@@ -716,8 +812,16 @@ window.onclick = function(event) {
 							var modal = document.getElementById('myModal'+devId);
 							modal.style.display = "none"; 
 						      document.getElementById("scheduleTime"+devId).value=""; 
-						      document.getElementById("daily"+devId).value=0; 
+						      //document.getElementById("daily"+devId).value=0; 
 						      document.getElementById("onOFF"+devId).value=0;
+						      document.getElementById("onOFF").value=0;
+						      document.getElementById("scheduleTimeDaySat"+devId).checked = false;
+						      document.getElementById("scheduleTimeDayFri"+devId).checked = false;
+						      document.getElementById("scheduleTimeDayThu"+devId).checked = false;
+						      document.getElementById("scheduleTimeDayWed"+devId).checked = false;
+						      document.getElementById("scheduleTimeDayTue"+devId).checked = false;
+						      document.getElementById("scheduleTimeDayMonday"+devId).checked = false;
+						      document.getElementById("scheduleTimeDaysunday"+devId).checked = false;
 						});
 
 	 
@@ -728,9 +832,17 @@ window.onclick = function(event) {
 function setSchedulerForAll() {
 	 
 	  var scheduleTime = $("#scheduleTime").val();
-	  var daily = $("#daily").val();
+	  //var daily = $("#daily").val();
 	  var onOFF = $("#onOFF").val();
 	  
+	  var dayschecked = document.getElementsByName('scheduleTimeDay');
+	  var days = "";
+	  for (var i=0; i<dayschecked.length; i++) {
+	      if (dayschecked[i].checked) {
+	    	  days=days+dayschecked[i].value;
+	      }
+	  }
+	  //alert(days);
 	  var checkboxes = document.getElementsByName('allScheduler');
 	  var selected = "";
 	  for (var i=0; i<checkboxes.length; i++) {
@@ -749,7 +861,7 @@ function setSchedulerForAll() {
 	  }
 	 
 	  
-	     if(selected!="")
+	     if(selected!="" && days!="")
 		   {
 		   on();
 		   $('#loader').show();
@@ -760,7 +872,7 @@ function setSchedulerForAll() {
 							{
 								 
 								scheduleTime : scheduleTime, 
-								daily : daily, 
+								daily : days, 
 								selected : selected,
 								selectedDivId : selectedDivId,
 								onOFF : onOFF,
@@ -795,6 +907,13 @@ function setSchedulerForAll() {
 								      }
 								      
 								  }
+							      document.getElementById("scheduleTimeDaySat").checked = false;
+							      document.getElementById("scheduleTimeDayFri").checked = false;
+							      document.getElementById("scheduleTimeDayThu").checked = false;
+							      document.getElementById("scheduleTimeDayWed").checked = false;
+							      document.getElementById("scheduleTimeDayTue").checked = false;
+							      document.getElementById("scheduleTimeDayMonday").checked = false;
+							      document.getElementById("scheduleTimeDaysunday").checked = false;
 							});
 		   
 		   
@@ -805,8 +924,15 @@ function setSchedulerForAll() {
 		   var modal = document.getElementById('myModal');
 			modal.style.display = "none"; 
 		      document.getElementById("scheduleTime").value=""; 
-		      document.getElementById("daily").value=0; 
+		      //document.getElementById("daily").value=0; 
 		      document.getElementById("onOFF").value=0;
+		      document.getElementById("scheduleTimeDaySat").checked = false;
+		      document.getElementById("scheduleTimeDayFri").checked = false;
+		      document.getElementById("scheduleTimeDayThu").checked = false;
+		      document.getElementById("scheduleTimeDayWed").checked = false;
+		      document.getElementById("scheduleTimeDayTue").checked = false;
+		      document.getElementById("scheduleTimeDayMonday").checked = false;
+		      document.getElementById("scheduleTimeDaysunday").checked = false;
 		   }  
 		 
 	}
