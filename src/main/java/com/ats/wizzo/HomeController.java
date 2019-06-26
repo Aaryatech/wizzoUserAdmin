@@ -35,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ats.wizzo.model.CurrentStatus;
+import com.ats.wizzo.model.DevIdWithType;
 import com.ats.wizzo.model.Device;
 import com.ats.wizzo.model.ErrorMessage;
 import com.ats.wizzo.model.GenerateOtp;
@@ -58,7 +59,13 @@ public class HomeController {
 	public static String onOperation = "piMjVtYV";
 
 	public static String offOperation = "JhTVo1V1";
-
+	
+	public static String fanOperation = "lfcGkYEw";
+	
+	public static String dimmer1Operation = "lfcGkYD1";
+	
+	public static String dimmer2Operation = "lfcGkYD2";
+	
 	private MqttClient client = null;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -205,6 +212,7 @@ public class HomeController {
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
 			String operation = request.getParameter("operation");
 			int devId = Integer.parseInt(request.getParameter("devId"));
+			int devIdValue = Integer.parseInt(request.getParameter("devIdValue"));
 
 			for (int i = 0; i < roomList.size(); i++) {
 				if (roomList.get(i).getRoomId() == roomId) {
@@ -215,12 +223,29 @@ public class HomeController {
 
 							MqttMessage message = new MqttMessage();
 							String msg = "";
-							if (operation.equalsIgnoreCase("on")) {
-								msg = user.getAuthKey() + onOperation + "#" + device.getDevType();
-							} else {
-								msg = user.getAuthKey() + offOperation + "#" + device.getDevType();
+							
+							if(device.getDevType()==678) {
+								
+								msg = user.getAuthKey() + fanOperation + "#" + devIdValue;
+								
+							}else if(device.getDevType()==12) {
+								
+								msg = user.getAuthKey() + dimmer1Operation + "#" + devIdValue;
+								
+							}else if(device.getDevType()==13) {
+								
+								msg = user.getAuthKey() + dimmer2Operation + "#" + devIdValue;
+								
+							}else {
+								
+								if (operation.equalsIgnoreCase("on")) {
+									msg = user.getAuthKey() + onOperation + "#" + device.getDevType();
+								} else {
+									msg = user.getAuthKey() + offOperation + "#" + device.getDevType();
 
+								}
 							}
+							
 							message.setPayload(msg.getBytes());
 
 							if (!client.isConnected()) {
@@ -250,9 +275,9 @@ public class HomeController {
 
 	@RequestMapping(value = "/allSwitchOnOff", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Integer> allSwitchOnOff(HttpServletRequest request, HttpServletResponse response) {
+	public List<DevIdWithType> allSwitchOnOff(HttpServletRequest request, HttpServletResponse response) {
 
-		List<Integer> roomIdList = new ArrayList<Integer>();
+		List<DevIdWithType> roomIdList = new ArrayList<DevIdWithType>();
 		try {
 
 			HttpSession session = request.getSession();
@@ -270,17 +295,54 @@ public class HomeController {
 			for (int i = 0; i < roomList.size(); i++) {
 				if (roomList.get(i).getRoomId() == roomId) {
 					for (int j = 0; j < roomList.get(i).getDeviceList().size(); j++) {
-						roomIdList.add(roomList.get(i).getDeviceList().get(j).getDevId());
+						
+						DevIdWithType devIdWithType = new DevIdWithType();
+						devIdWithType.setDevId(roomList.get(i).getDeviceList().get(j).getDevId());
+						devIdWithType.setType(roomList.get(i).getDeviceList().get(j).getDevType() );
+						roomIdList.add(devIdWithType);
 
 						Device device = roomList.get(i).getDeviceList().get(j);
 
 						MqttMessage message = new MqttMessage();
 						String msg = "";
 						if (operation.equalsIgnoreCase("on")) {
-							msg = user.getAuthKey() + onOperation + "#" + device.getDevType();
+							
+							if(device.getDevType()==678) {
+								
+								msg = user.getAuthKey() + fanOperation + "#" + 1;
+								
+							}else if (device.getDevType()==12){
+								
+								msg = user.getAuthKey() + dimmer1Operation + "#" + 1;
+								
+							}else if (device.getDevType()==13){
+								
+								msg = user.getAuthKey() + dimmer2Operation + "#" + 1;
+								
+							}else {
+								
+								msg = user.getAuthKey() + onOperation + "#" + device.getDevType();
+							}
+							
 						} else {
-							msg = user.getAuthKey() + offOperation + "#" + device.getDevType();
-
+							
+							if(device.getDevType()==678) {
+								
+								msg = user.getAuthKey() + fanOperation + "#" + 0;
+								
+							}else if (device.getDevType()==12){
+								
+								msg = user.getAuthKey() + dimmer1Operation + "#" + 0;
+								
+							}else if (device.getDevType()==13){
+								
+								msg = user.getAuthKey() + dimmer2Operation + "#" + 0;
+								
+							}else {
+								
+								msg = user.getAuthKey() + offOperation + "#" + device.getDevType();
+							}
+ 
 						}
 						message.setPayload(msg.getBytes());
 
@@ -347,7 +409,8 @@ public class HomeController {
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
 			int devId = Integer.parseInt(request.getParameter("devId"));
 			int onOFF = Integer.parseInt(request.getParameter("onOFF"));
-
+			int sliderValue = Integer.parseInt(request.getParameter("sliderValue"));
+			
 			System.out.println(scheduleTime);
 			System.out.println(daily);
 			System.out.println(roomId);
@@ -362,7 +425,13 @@ public class HomeController {
 							scheduler.setDay(daily);
 							scheduler.setDevMac(roomList.get(i).getDeviceList().get(j).getDevMac());
 							scheduler.setDevType(roomList.get(i).getDeviceList().get(j).getDevType());
-							scheduler.setOperation(onOFF);
+							if(roomList.get(i).getDeviceList().get(j).getDevType()==678 || 
+									roomList.get(i).getDeviceList().get(j).getDevType()==12 || roomList.get(i).getDeviceList().get(j).getDevType()==13) {
+								scheduler.setOperation(sliderValue);
+							}else {
+								scheduler.setOperation(onOFF);
+							}
+							
 							scheduler.setSchStatus(1);
 							scheduler.setTime(scheduleTime + ":00");
 							scheduler.setUserId(roomList.get(i).getDeviceList().get(j).getUserId());

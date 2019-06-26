@@ -137,6 +137,12 @@ public void messageArrived(String topic, MqttMessage message)
 	 currentStatus.setStatus("off");
 
 	 
+ }else if(status.equalsIgnoreCase("off5")) {
+
+	 currentStatus.setDevType("5");
+	 currentStatus.setStatus("off");
+
+	 
  }else if(status.equalsIgnoreCase("on1")) {
 
 	 currentStatus.setDevType("1"); 
@@ -157,6 +163,60 @@ public void messageArrived(String topic, MqttMessage message)
 	 currentStatus.setDevType("4");
 	 currentStatus.setStatus("on");
 
+ }else if(status.equalsIgnoreCase("on5")) {
+
+	 currentStatus.setDevType("5");
+	 currentStatus.setStatus("on");
+
+ }else if(status.equalsIgnoreCase("0")) {
+
+	 currentStatus.setDevType("678");
+	 currentStatus.setStatus("0");
+
+ }else if(status.equalsIgnoreCase("1")) {
+
+	 currentStatus.setDevType("678");
+	 currentStatus.setStatus("1");
+
+ }else if(status.equalsIgnoreCase("2")) {
+
+	 currentStatus.setDevType("678");
+	 currentStatus.setStatus("2");
+
+ }else if(status.equalsIgnoreCase("3")) {
+
+	 currentStatus.setDevType("678");
+	 currentStatus.setStatus("3");
+
+ }else if(status.equalsIgnoreCase("4")) {
+
+	 currentStatus.setDevType("678");
+	 currentStatus.setStatus("4");
+
+ }else if(status.equalsIgnoreCase("5")) {
+
+	 currentStatus.setDevType("678");
+	 currentStatus.setStatus("5");
+
+ }else {
+	   
+	 try {
+	 for(int i=0 ; i<100; i++) {
+		 
+		 if(String.valueOf("A"+i).equalsIgnoreCase(status)) {
+			 currentStatus.setDevType("12");
+			 currentStatus.setStatus(String.valueOf(i));
+			 
+		 }
+		 if(String.valueOf("B"+i).equalsIgnoreCase(status)) {
+			 currentStatus.setDevType("13");
+			 currentStatus.setStatus(String.valueOf(i));
+		 }
+	 }
+	 }catch(Exception e) {
+		 
+	 }
+	 
  }
 
  currentStatusList.add(currentStatus);

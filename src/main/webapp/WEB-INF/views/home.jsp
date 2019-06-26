@@ -510,6 +510,19 @@ body {
 															</div>
 
 															<br>
+															<c:if
+																test="${deviceList.devType==678 || deviceList.devType==12 || deviceList.devType==13}">
+																<div class="colOuter">
+																	<div class="col-md-2">Enter Value*</div>
+																	<div class="col-md-3">
+																		<input type="text"
+																			name="scheduleSliderValue${deviceList.devId}"
+																			id="scheduleSliderValue${deviceList.devId}">
+																	</div>
+																</div>
+															</c:if>
+
+
 
 															<div class="colOuter">
 																<div class="col-md-2">ON/OFF*</div>
@@ -531,7 +544,7 @@ body {
 															<div class="colOuter">
 																<div align="center">
 																	<input type="button"
-																		onclick="setScheduler(${deviceList.devId},${deviceList.roomId})"
+																		onclick="setScheduler(${deviceList.devId},${deviceList.roomId},${deviceList.devType})"
 																		value="Set Shedule" class="btn btn-info">
 																</div>
 
@@ -542,36 +555,66 @@ body {
 
 												<td align="right"
 													style="padding-right: 12px; padding-left: 10px; padding-bottom: 10px;">
-													<label class="switch"> <c:forEach
-															items="${currentStatusList}" var="currentStatusList">
-															<c:choose>
-																<c:when
-																	test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType}">
+													<c:choose>
+														<c:when
+															test="${deviceList.devType==678 || deviceList.devType==12 || deviceList.devType==13}">
+															<c:set var="find" value="0"></c:set>
+															<c:forEach items="${currentStatusList}"
+																var="currentStatusList">
+																<c:if
+																	test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType && deviceList.devType==678}">
+																	<input type="range" min="0" max="5"
+																		value="${currentStatusList.status}"
+																		id="switch${deviceList.devId}"
+																		onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																		style="width: 100px;">
+																	<c:set var="find" value="1"></c:set>
+
+																</c:if>
+																<c:if
+																	test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType && deviceList.devType==12}">
+																	<input type="range" min="0" max="100"
+																		value="${currentStatusList.status}"
+																		id="switch${deviceList.devId}"
+																		onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																		style="width: 100px;">
+																	<c:set var="find" value="1"></c:set>
+
+																</c:if>
+																<c:if
+																	test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType && deviceList.devType==13}">
+																	<input type="range" min="0" max="100"
+																		value="${currentStatusList.status}"
+																		id="switch${deviceList.devId}"
+																		onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																		style="width: 100px;">
+																	<c:set var="find" value="1"></c:set>
+
+																</c:if>
+															</c:forEach>
+
+															<c:if test="${find==0}">
+																<input type="range" min="0" max="5" value="0"
+																	id="switch${deviceList.devId}"
+																	onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																	disabled style="width: 100px;" disabled>
+															</c:if>
+
+
+														</c:when>
+														<%-- <c:when
+															test="${deviceList.devType==12 || deviceList.devType==13}">
+															<input type="range" min="0" max="100" value="0"
+																id="switch${deviceList.devId}"
+																onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																style="width: 100px;">
+														</c:when> --%>
+														<c:otherwise>
+															<label class="switch"> <c:forEach
+																	items="${currentStatusList}" var="currentStatusList">
 																	<c:choose>
-																		<c:when test="${currentStatusList.status eq on}">
-																			<input type="checkbox" value="${deviceList.devId}"
-																				id="switch${deviceList.devId}"
-																				onchange="onAndOff(${deviceList.devId},${deviceList.roomId});"
-																				style="height: 10px;" checked>
-																		</c:when>
-																		<c:when test="${currentStatusList.status eq off}">
-																			<input type="checkbox" value="${deviceList.devId}"
-																				id="switch${deviceList.devId}"
-																				onchange="onAndOff(${deviceList.devId},${deviceList.roomId});"
-																				style="height: 10px;">
-																		</c:when>
-
-																	</c:choose>
-
-																	<%-- <c:choose>
-																		<c:when test="${deviceList.devType==678}">
-																			<input type="range" min="1" max="100" value="50">
-																		</c:when>
 																		<c:when
-																			test="${deviceList.devType==12 || deviceList.devType==13}">
-																			<input type="range" min="1" max="100" value="50">
-																		</c:when>
-																		<c:otherwise>
+																			test="${currentStatusList.devMac==deviceList.devMac && currentStatusList.devType==deviceList.devType}">
 																			<c:choose>
 																				<c:when test="${currentStatusList.status eq on}">
 																					<input type="checkbox" value="${deviceList.devId}"
@@ -587,20 +630,48 @@ body {
 																				</c:when>
 
 																			</c:choose>
+
+																			<%-- <c:choose>
+																		<c:when test="${deviceList.devType==678}">
+																			<input type="range" min="0" max="5" value="0"
+																				id="switch${deviceList.devId}"
+																				onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});">
+																		</c:when>
+																		<c:when
+																			test="${deviceList.devType==12 || deviceList.devType==13}">
+																			<input type="range" min="0" max="100" value="0"
+																				id="switch${deviceList.devId}"
+																				onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});">
+																		</c:when>
+																		<c:otherwise>
+																			<c:choose>
+																				<c:when test="${currentStatusList.status eq on}">
+																					<input type="checkbox" value="${deviceList.devId}"
+																						id="switch${deviceList.devId}"
+																						onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																						style="height: 10px;" checked>
+																				</c:when>
+																				<c:when test="${currentStatusList.status eq off}">
+																					<input type="checkbox" value="${deviceList.devId}"
+																						id="switch${deviceList.devId}"
+																						onchange="onAndOff(${deviceList.devId},${deviceList.roomId},${deviceList.devType});"
+																						style="height: 10px;">
+																				</c:when>
+
+																			</c:choose>
 																		</c:otherwise>
 																	</c:choose> --%>
 
-																</c:when>
+																		</c:when>
 
-															</c:choose>
+																	</c:choose>
 
-														</c:forEach> <%-- 
-													 <input type="checkbox"
-														value="${deviceList.devId}" id="switch${deviceList.devId}"
-														onchange="onAndOff(${deviceList.devId},${deviceList.roomId});" checked> --%>
-
-														<span class="slider round"></span>
-												</label>
+																</c:forEach> <span class="slider round"></span>
+															</label>
+														</c:otherwise>
+													</c:choose> <%-- <input type="range" min="0" max="5" value="0"
+													id="fanslider${deviceList.devId}"
+													onchange="offonfan(${deviceList.devId})"> --%>
 												</td>
 											</tr>
 										</table>
@@ -729,6 +800,13 @@ body {
 	<script type="text/javascript"
 		src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
+	
+	function offonfan(devId) {
+		 //alert(devId);
+	   var val = document.getElementById("fanslider"+devId).value;
+	   alert(val);
+	}
+	
 function on() {
     document.getElementById("overlay").style.display = "block";
 }
@@ -815,9 +893,14 @@ window.onclick = function(event) {
 
 	<script type="text/javascript">
   
-  function setScheduler(devId,roomId) {
+  function setScheduler(devId,roomId,devType) {
 	  
 	  var scheduleTime = $("#scheduleTime"+devId).val();
+	  var sliderValue=0;
+	  
+	  if(devType==678 || devType==12 || devType==13){
+		  sliderValue = $("#scheduleSliderValue"+devId).val();
+	  }
 	  //var daily = $("#daily"+devId).val();
 	  var dayschecked = document.getElementsByName('scheduleTimeDay'+devId);
 	  var days = "";
@@ -842,6 +925,7 @@ window.onclick = function(event) {
 							roomId : roomId,
 							devId : devId,
 							onOFF : onOFF,
+							sliderValue : sliderValue,
 							ajax : 'true'
 
 						},
@@ -982,18 +1066,23 @@ function setSchedulerForAll() {
 		 
 	}
   
-  function onAndOff(devId,roomId) {
+  function onAndOff(devId,roomId,devType) {
 		 
 		 
-		var devId = $('#switch'+devId).val();
+		var devIdValue = $('#switch'+devId).val();
 		var operation="";
 		 
+		if(devType!=678 && devType!=12 && devType!=13){
+			
+		
 		  if(document.getElementById("switch"+devId).checked == true)
 		  {
 				operation="on";
-				}else{
+				}
+		  else{
 					operation="off";			
 				}
+		}
 		  on();
 		  $.getJSON('${singleSwitchOnOff}',
 
@@ -1003,6 +1092,7 @@ function setSchedulerForAll() {
 				roomId : roomId, 
 				devId : devId,
 				operation: operation,
+				devIdValue : devIdValue,
 						ajax : 'true'
 
 					},
@@ -1044,7 +1134,12 @@ function setSchedulerForAll() {
 						 { 
 							try {
 						          
-								document.getElementById("switch"+data[i]).checked = true;
+								if(data[i].type==678 || data[i].type==12 || data[i].type==13){
+									 document.getElementById("switch"+data[i].devId).value = "1";
+								}else{
+									document.getElementById("switch"+data[i].devId).checked = true;
+								}
+								
 						      } 
 						      
 						      catch ( e ) {
@@ -1059,8 +1154,11 @@ function setSchedulerForAll() {
 						for(var i =0 ;i<data.length;i++)
 						 { 
 							try {
-						          
-								document.getElementById("switch"+data[i]).checked = false;
+								if(data[i].type==678 || data[i].type==12 || data[i].type==13){
+									 document.getElementById("switch"+data[i].devId).value = "0";
+								}else{
+									document.getElementById("switch"+data[i].devId).checked = false;
+								}
 						      } 
 							 catch ( e ) {
 							        
